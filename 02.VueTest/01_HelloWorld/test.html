@@ -15,6 +15,8 @@
       5. 理解vue的mvvm实现
     -->
     <div id="app">
+      <!-- 指令语法 -->
+      <input tpye="text" v-model="msg" />
       <!-- 模板语法 -->
       <p>{{msg}}</p>
       <!-- 静态数据是写死的 -->
@@ -40,6 +42,20 @@
           - 模板语法      
             - 插值语法（双大括号表达式）: {{JS表达式}}
               作用：用来在HTML中动态展示数据（JS中的数据）
+          - 指令语法
+            v-model="JS表达式" 
+            Vue自定义的以v-xxx开头的标签属性，属性值是JS表达式    
+            作用：用于实现双向数据绑定
+            更多的指令：https://cn.vuejs.org/v2/api/#v-model
+
+            双向数据绑定：
+              视图层 / 页面
+              数据层 / 代码 / data
+              1. 改变页面的输入，vue会自动将页面最新的数据保存在代码data对应的属性上
+                视图层 --> 数据层  （数据由视图层流向数据层）
+              2. 当data数据发生变化，vue会自动将最新的数据更新到页面对应的位置上
+                数据层 --> 视图层  （数据由数据层流向视图层）  
+                如果只有第二种情况，叫做数据的单向绑定（单向数据流）--> React
 
         3. 表达式和语句
           - 表达式
@@ -63,16 +79,54 @@
           if (a < 123) {} // 语句
           a < 123 // 表达式
           if (fn()) {} 
+
+        4. 理解MVVM
+          MVC
+            M --> Model 数据层（存放数据）
+            V --> View 视图层（展示页面）
+            C --> Controller 控制层（复杂操作数据显示到页面上）
+          MVVM
+            M --> Model 数据层（为模板页面提供数据 data）
+            V --> View 视图层（模板页面）
+            VM --> ViewModel 通过数据绑定和DOM事件监听来实现 Model 和 View 的双向数据绑定
+              数据绑定： Model --> View
+              DOM事件监听: View --> Model
       */
-      new Vue({
+      // vm Vue的实例对象
+      // const vm = new Vue({
+      //   // 配置对象
+      //   el: "#app", // 获取DOM元素 内部通过querySelector
+      //   data: {
+      //     // data数据：用来保存要展示在页面上的动态数据(会变化)
+      //     msg: "atguigu",
+      //     aaa: "aaa",
+      //   },
+      // });
+
+      // const vm = new Vue({
+      //   // 配置对象
+      //   // el: "#app", // 获取DOM元素 内部通过querySelector
+      //   data: {
+      //     // data数据：用来保存要展示在页面上的动态数据(会变化)
+      //     msg: "atguigu",
+      //     aaa: "aaa",
+      //   },
+      // });
+
+      // vm.$mount("#app");
+
+      // 简写
+      // 实例对象上方法一般用的少
+      // $xxx()是实例对象的方法 https://cn.vuejs.org/v2/api/#vm-mount
+      const vm = new Vue({
         // 配置对象
-        el: "#app", // 获取DOM元素 内部通过querySelector
+        // el: "#app", // 获取DOM元素 内部通过querySelector
         data: {
           // data数据：用来保存要展示在页面上的动态数据(会变化)
           msg: "atguigu",
           aaa: "aaa",
         },
-      });
+      }).$mount("#app"); // 连续调用n次，链式调用 return this
     </script>
   </body>
 </html>

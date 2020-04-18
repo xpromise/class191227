@@ -59,3 +59,17 @@
 4. 实际结果是什么
 
 注意：提问前把你描述的问题百度一下，看有没有答案
+
+## 常用学习网址
+
+- 文章
+
+  1. https://juejin.im/timeline
+  2. https://segmentfault.com/
+  3. https://www.yuque.com/explore/headlines
+  4. https://www.infoq.cn/topic/Front-end
+
+- 遇到 Bug 找解决方案
+  - 百度/谷歌
+  - Github 中 issues
+  - https://stackoverflow.com/
