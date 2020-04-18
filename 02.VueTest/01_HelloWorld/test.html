@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>01_HelloWorld</title>
+  </head>
+  <body>
+    <!--
+      1. 引入Vue.js
+      2. 创建Vue对象
+        el : 指定根element(选择器)
+        data : 初始化数据(页面可以访问)
+      3. 双向数据绑定 : v-model
+      4. 显示数据 : {{xxx}}
+      5. 理解vue的mvvm实现
+    -->
+    <div id="app">
+      <!-- 模板语法 -->
+      <p>{{msg}}</p>
+      <!-- 静态数据是写死的 -->
+      <p>hello atguigu</p>
+    </div>
+    <!-- 引入vue.js框架 -->
+    <script src="../js/vue.js"></script>
+    <script>
+      /*
+        一旦引入vue.js全局就有一个变量 Vue
+        Vue是一个构造函数
+
+        1. new Vue(配置对象)
+          - 什么是配置对象？
+            - 普通对象：属性名是任意的(类型必须是字符串)
+            - 配置对象：属性名固定的   每一个固定的属性都有相应的作用，不能随便写
+              第一层属性（对象的直接属性，如el、data）是固定的
+              第二层属性（对象的对象上的属性，如msg）就不一定了，看文档
+              更多的配置选项，看文档：https://cn.vuejs.org/v2/api/ （选项）
+
+        2. 模板
+          - 模板页面：整个页面叫做模板页面 HTML + JS + CSS
+          - 模板语法      
+            - 插值语法（双大括号表达式）: {{JS表达式}}
+              作用：用来在HTML中动态展示数据（JS中的数据）
+
+        3. 表达式和语句
+          - 表达式
+            1. 没有分号结尾
+            2. 有一个结果值(返回值，值可以是undefined)
+          - 语句
+            1. 有分号结尾，如果没有分号在编译时会自动添加分号
+            2. 对内部的数据进行操作，没有结果值
+
+          const a = 123 // 语句
+          a // 表达式
+          123 // 表达式
+          123; // 语句
+
+          function fn() {} // 语句
+          const fn = function () {} // 函数表达式语句
+          fn // 表达式
+          fn() // 表达式
+          fn(); // 表达式语句
+
+          if (a < 123) {} // 语句
+          a < 123 // 表达式
+          if (fn()) {} 
+      */
+      new Vue({
+        // 配置对象
+        el: "#app", // 获取DOM元素 内部通过querySelector
+        data: {
+          // data数据：用来保存要展示在页面上的动态数据(会变化)
+          msg: "atguigu",
+          aaa: "aaa",
+        },
+      });
+    </script>
+  </body>
+</html>
