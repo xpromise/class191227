@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>检查签到</title>
+  </head>
+  <body>
+    <h1>签到</h1>
+    <script>
+      // 定义班级总人数
+      const studentsNum = 31;
+
+      let str = `杨博 10:11:34
+5
+
+吉迎忠 10:11:34
+19
+
+刘燕 10:11:36
+11
+
+郭艳青 10:11:36
+3
+
+宋静雨 10:11:36
+4
+
+沈晓锟 10:11:37
+23
+
+邵晓伟 10:11:37
+15
+
+袁瑞莹 10:11:37
+22
+
+刘小东 10:11:37
+7
+
+张福龙 10:11:38
+14
+
+王凯凯 10:11:38
+20
+
+郝立雨 10:11:38
+13
+
+杨晨 10:11:39
+16
+
+曹震 10:11:39
+27
+
+纪智茹 10:11:39
+17
+
+王子阳 10:11:39
+10
+
+郝乃群 10:11:40
+6
+
+王埔端华 10:11:40
+8
+
+尚祖圳 10:11:40
+2
+
+高显虎 10:11:41
+31
+
+闫思琦 10:11:41
+29
+
+吕下雪 10:11:42
+28
+
+杜玉婷 10:11:42
+21
+
+张亚欣 10:11:43
+9
+
+邸佳怡 10:11:43
+30
+
+谷晓茹 10:11:44
+24
+
+王宝红 10:11:45
+18
+
+刘紫妍 10:11:46
+25
+
+周耀轩 10:11:50
+1
+
+孙恒 10:11:52
+26
+
+姜昱 10:12:03
+12
+
+`;
+
+      const arr = str
+        .replace(/[\u4e00-\u9fa5]+/g, "") // 删除中文
+        .replace(/\s+/g, " ") // 将多个换行符替换为空格
+        .trim() // 去除首尾两端空格
+        .split(" "); // 拆分成数组
+
+      // 没有签到人数组
+      const notSignInArr = [];
+
+      for (let index = 1; index < studentsNum; index++) {
+        const result = arr.indexOf(index + "");
+        if (result < 0) {
+          notSignInArr.push(index);
+        }
+      }
+
+      console.log(notSignInArr);
+    </script>
+  </body>
+</html>
