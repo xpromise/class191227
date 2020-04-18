@@ -17,13 +17,133 @@
         计算属性存在缓存, 多次读取只执行一次getter计算
     -->
     <div id="app">
-      姓: <input type="text" placeholder="First Name" /><br />
-      名: <input type="text" placeholder="Last Name" /><br />
-      姓名1: <input type="text" placeholder="Full Name1" /><br />
-      姓名2: <input type="text" placeholder="Full Name2" /><br />
+      姓:
+      <!-- v-bind只能实现数据单向绑定 -->
+      <!-- <input type="text" placeholder="First Name" :value="firstName" /><br /> -->
+      <!-- v-model才能实现数据双向绑定 -->
+      <input type="text" placeholder="First Name" v-model="firstName" /><br />
+      名: <input type="text" placeholder="Last Name" v-model="lastName" /><br />
+      姓名1:
+      <input type="text" placeholder="Full Name1" v-model="fullName1" /><br />
+      姓名2:
+      <input type="text" placeholder="Full Name2" v-model="fullName2" /><br />
     </div>
 
     <script type="text/javascript" src="../js/vue.js"></script>
-    <script type="text/javascript"></script>
+    <!-- <script type="text/javascript">
+      // 使用原生JS
+      const person = {
+        firstName: "xiaofei",
+        lastName: "zhang",
+        // fullName: 'xiaofei-zhange'
+      };
+
+      // 定义多个属性
+      // Object.defineProperties
+      // 定义单个属性
+      Object.defineProperty(person, "fullName", {
+        // 属性描述符 / 元属性（描述属性的属性）
+        // writable: false, // 决定属性是否可以被修改
+        // configurable: false, // 决定属性是否可以重新配置/删除
+        // enumerable: false, // 决定属性是否被遍历for in
+        // value: "123", // 属性的值
+
+        // 访问描述符
+        // 重新属性的读取/设置的方法
+        get() {
+          // 读取属性调用的方法
+          // this指向person对象
+          return this.firstName + "-" + this.lastName;
+        },
+        set(value) {
+          // 设置属性调用的方法
+          // 数组的解构赋值
+          const [firstName, lastName] = value.split("-");
+          this.firstName = firstName;
+          this.lastName = lastName;
+        },
+      });
+
+      // 需求1： 当我改变firstName时，希望fullName自动发生变化
+      // person.firstName = "leilei";
+      // person.lastName = "li";
+      // 需求2： 当我改变fullName时，需要firstName和lastName自动发生变化
+      person.fullName = "qiang-li";
+      console.log(person);
+
+      // for (const key in person) {
+      //   console.log(key);
+      // }
+
+      // person.fullName = 456;
+      // delete person.fullName;
+    </script> -->
+
+    <script>
+      /*
+        1. 计算属性
+          - 定义某个属性的getter和setter
+          - 属性不需要在data中定义
+
+          什么时候用计算属性：
+            当一个属性不能直接显示，而是要通过计算后才能显示，就使用计算属性
+
+        2. 监视属性
+          - 监视某个属性的变化
+          - 属性需要在data中定义  
+
+          监视属性一般用的很少，只有属性发生变化需要发送AJAX请求时，才会用上~
+          
+          简单理解，一般使用计算属性，只有需要发送请求就使用监视属性~ 
+      */
+      const vm = new Vue({
+        data: {
+          firstName: "xiaofei",
+          lastName: "zhang",
+          fullName2: "xiaofei-zhange",
+        },
+        computed: {
+          // 计算属性: 
+          // fullName1() { // 只是描述属性的getter方法，没有setter
+          //   // this指向实例对象
+          //   return this.firstName + "-" + this.lastName;
+          // },
+          fullName1: {
+            get() {
+              return this.firstName + "-" + this.lastName;
+            },
+            set(value) {
+              const [firstName, lastName] = value.split("-");
+              this.firstName = firstName;
+              this.lastName = lastName;
+            },
+          },
+        },
+        watch: {
+          // 监视属性: 这个属性必须存在data中
+          firstName(newValue, oldValue) {
+            // 监视data中firstName属性的变化，一旦变化就会触发当前函数
+            // console.log(newValue, oldValue);
+            this.fullName2 = newValue + "-" + this.lastName;
+          },
+          lastName(value) {
+            // 监视data中lastName属性的变化，一旦变化就会触发当前函数
+            this.fullName2 = this.firstName + "-" + value;
+          },
+          // fullName2(value) {
+          //   const [firstName, lastName] = value.split("-");
+          //   this.firstName = firstName;
+          //   this.lastName = lastName;
+          // },
+        },
+      }).$mount("#app");
+
+      // 用的很少
+      vm.$watch("fullName2", function (value) {
+        const [firstName, lastName] = value.split("-");
+        this.firstName = firstName;
+        this.lastName = lastName;
+      });
+    </script>
   </body>
 </html>
