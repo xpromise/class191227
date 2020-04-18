@@ -30,10 +30,74 @@
       -->
     <div id="app">
       <h2>1. 双大括号表达式</h2>
+      <p>{{content}}</p>
+      <p>{{content}}</p>
 
       <h2>2. 指令一: 强制数据绑定</h2>
+      <a href="url">学习圣地(错误)</a>
+      <!-- 会报错 -->
+      <!-- <a href="{{url}}">学习圣地(错误)</a> -->
+      <a v-bind:href="url">学习圣地</a>
+      <a :href="url">学习圣地</a>
 
       <h2>3. 指令二: 绑定事件监听</h2>
+      <button v-on:click="showMsg">按钮1</button>
+      <button @click="showMsg">按钮2</button>
+      <!-- input事件value值发生变化就触发的事件 -->
+      <input type="text" @input="handleInput" />
+      <!-- change事件是失去焦点并且值发生变化触发的事件 -->
+      <input type="text" @change="handleChange" />
     </div>
+    <script src="../js/vue.js"></script>
+    <script>
+      /*
+        如果要将数据显示到标签内部去，用双大括号表达式
+        如果要将数据显示到标签属性上，用v-bind强制数据绑定
+
+        this指向：动态确定的
+          1. 函数直接调用 fn() this指向window 
+            特殊：在ES5严格模式下 this指向undefined
+          2. 函数隐式调用 obj.fn() this指向obj
+          3. 函数显示调用 fn.call/apply(obj) this指向obj
+          4. 函数new调用 new Fn() this指向实例对象
+          5. ES6箭头函数 this指向离他最近一层包裹它的函数的this（外部函数的this）
+          6. 回调函数
+            - 什么是回调函数？
+              - 我定义的
+              - 我没有调用
+              - 最终执行了
+            - 有哪些回调函数
+              - 定时器回调函数 this默认指向window 
+                特殊：在ES5严格模式下 this指向undefined
+              - DOM事件回调函数 this指向被绑定事件的DOM元素
+                特殊：在Vue框架中，DOM事件回调函数的this指向Vue的实例对象vm
+      */
+      const vm = new Vue({
+        // el: '#app',
+        // 在new Vue内部，会将data上的所有属性和methods上面所有方法挂载到vm实例对象上
+        data: {
+          // data定义属性
+          content: "晓飞张喜欢周冬雨",
+          url: "http://www.atguigu.com",
+        },
+        methods: {
+          // methods定义方法
+          showMsg: function (event) {
+            console.log("hello 晓飞张~");
+          },
+          // ES6对象简写方式
+          handleInput(event) {
+            console.log(event.target.value);
+            console.log("input事件触发了~");
+          },
+          handleChange(event) {
+            console.log(this);
+            console.log("change事件触发了~");
+          },
+        },
+      }).$mount("#app");
+
+      console.log(vm);
+    </script>
   </body>
 </html>
