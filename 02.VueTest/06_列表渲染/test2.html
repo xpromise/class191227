@@ -1,18 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>06_列表渲染_过滤与排序</title>
-</head>
-<body>
-<!--
+  <head>
+    <meta charset="UTF-8" />
+    <title>06_列表渲染_过滤与排序</title>
+  </head>
+  <body>
+    <!--
 1. 列表过滤
 2. 列表排序
 -->
+    <div id="app">
+      <!-- 通过v-model收集searchName数据 -->
+      <input type="text" placeholder="请输入名称" v-model="searchName" />
+      <ul>
+        <li v-for="(person) in filterPersons" :key="person.id">
+          {{person.id}} -- {{person.name}} -- {{person.age}}
+        </li>
+      </ul>
+      <button @click="selecOrder(1)">升序排序</button>
+      <button @click="selecOrder(2)">降序排序</button>
+      <button @click="selecOrder(0)">原本顺序</button>
+    </div>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript">
+      new Vue({
+        data: {
+          searchName: "",
+          /*
+            一种情况 直接写死
+            两种情况 可以用布尔值
+            多种情况 可以用 0 1 2 
+            0 原本顺序
+            1 升序排序
+            2 降序排序
+          */
+          orderType: 0,
+          persons: [
+            { id: 1, name: "jack", age: 20 },
+            { id: 3, name: "rose", age: 18 },
+            { id: 5, name: "jerry", age: 16 },
+            { id: 7, name: "tom", age: 18 },
+            { id: 8, name: "liqiang", age: 38 },
+          ],
+        },
+        methods: {
+          selecOrder(orderType) {
+            // 修改orderType
+            this.orderType = orderType;
+          },
+        },
+        computed: {
+          /*
+            计算属性：
+            一上来会触发一次，得到结果显示到页面上
+            当内部依赖的值（参与计算data的值）发生变化，也会继续触发，
+            否则使用缓存（如果内部的值没有变化，此时读取会使用上一次的缓存结果，不会重新计算）
+          */
+          filterPersons() {
+            // 需求：persons根据searchName来计算得到最终要显示的数据
+            // const persons = this.persons;
+            // const searchName = this.searchName;
+            // 对象的解构赋值
+            const { persons, searchName, orderType } = this;
+            /*
+              对数组进行操作，一定要联系数组的方法
+                filter 长度变值不变
+                  返回一个新数组，不会对原数组产生任何影响（不会修改原数组）
+                  特点：新数组长度往往比原数组更少，但里面的值和原来的一定一样
+                  如：将数组小于10的数全部干掉
+                map 长度不变值变
+                  返回一个新数组，不会对原数组产生任何影响（不会修改原数组）
+                  特点：新数组长度和原数组一定一样，但里面的值往往会发生变化
+                  如：将数组每项值加10
+                reduce 长度和值都变
+                  arr.reduce((previousValue, currentValue) => {}, initValue)
+                  如果希望reduce方法返回值是number类型，initValue往往初始化为 0
+                  如果希望reduce方法返回值是object类型，initValue往往初始化为 {}
+                  如果希望reduce方法返回值是array类型，initValue往往初始化为 []
+                  如果希望reduce方法返回值是string类型，initValue往往初始化为 ''
+            */
+            const filterPersons = persons.filter((person, index, persons) => {
+              /*
+                返回true会保留在新数组中
+                返回false会被过滤掉
 
-<script type="text/javascript" src="../js/vue.js"></script>
-<script type="text/javascript">
+                如果 person.name 匹配上 searchName，就保留，反之过滤
+                  如何判断？ 考虑字符串的方法
+                  String.prototype.indexOf(string) 
+                    如果匹配上，返回值就是匹配下标 0 1 2...
+                    如果没有匹配上，返回值就是 -1
+              */
+              return person.name.indexOf(searchName) > -1;
+            });
 
-</script>
-</body>
+            // 排序
+            switch (orderType) {
+              case 1:
+                // 升序
+                filterPersons.sort((p1, p2) => {
+                  // 根据年龄排序
+                  return p1.age - p2.age;
+                });
+                break;
+              case 2:
+                // 降序
+                filterPersons.sort((p1, p2) => {
+                  // 根据年龄排序
+                  return p2.age - p1.age;
+                });
+                break;
+            }
+
+            return filterPersons;
+          },
+        },
+      }).$mount("#app");
+    </script>
+  </body>
 </html>
