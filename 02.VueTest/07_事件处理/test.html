@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>07_事件处理</title>
-</head>
-<body>
-<!--
+  <head>
+    <meta charset="UTF-8" />
+    <title>07_事件处理</title>
+  </head>
+  <body>
+    <!--
 1. 绑定监听:
   v-on:xxx="fun"
   @xxx="fun"
@@ -20,19 +20,92 @@
   .enter : 操作的是enter键
 -->
 
-<div id="example">
+    <div id="example">
+      <h2>1. 绑定监听</h2>
+      <!-- 
+        1. 如果函数不需要其他参数，或者只需要event参数用第一种
+        2. 如果函数不需要event参数，只需要其他参数，用第二种
+        3. 如果函数既需要event参数，也需要其他参数，用三种
+        4. 如果事件回调函数只有一条语句，建议用第四种
+       -->
+      <!-- 默认会传入event参数 -->
+      <button v-on:click="showMsg1">按钮1</button>
+      <!-- 默认是没有参数的, 为了传入其他参数 -->
+      <button v-on:click="showMsg2('hello', 123, 456)">按钮2</button>
+      <button v-on:click="showMsg3('hello', $event)">按钮3</button>
 
-  <h2>1. 绑定监听</h2>
+      <!-- 默认会去this上找，所以不能写this -->
+      <button @click="orderType = 1">按钮4</button>
+      <button @click="orderType = 2">按钮5</button>
 
-  <h2>2. 事件修饰符</h2>
+      <h2>2. 事件修饰符</h2>
+      <!-- 
+        阻止事件默认行为 event.preventDefault()
+        阻止事件冒泡  event.stopPropagation()
+          事件阶段
+            事件捕获 由外向内
+            目标阶段 目标元素
+            事件冒泡 由内向外
+        更多事件修饰符：https://cn.vuejs.org/v2/api/#v-on    
+       -->
+      <a href="http://www.atguigu.com" @click.prevent="test1">测试a标签</a>
 
-  <h2>3. 按键修饰符</h2>
+      <div
+        :style="{width: '300px', height: '300px', backgroundColor: 'pink'}"
+        @click="test2"
+      >
+        <div
+          :style="{width: '150px', height: '150px', backgroundColor: 'deeppink'}"
+          @click.stop="test3"
+        ></div>
+      </div>
 
-</div>
+      <h2>3. 按键修饰符</h2>
+      <!-- 适用于所有键 -->
+      <input type="text" @keyup.13="test4" />
+      <!-- 
+        只有少部分键可以使用：enter 
+        https://cn.vuejs.org/v2/guide/events.html#%E6%8C%89%E9%94%AE%E4%BF%AE%E9%A5%B0%E7%AC%A6
+      -->
+      <input type="text" @keyup.enter="test4" />
+    </div>
 
-<script type="text/javascript" src="../js/vue.js"></script>
-<script type="text/javascript">
-
-</script>
-</body>
+    <script src="../js/vue.js"></script>
+    <script>
+      new Vue({
+        data: {
+          orderType: 0,
+        },
+        methods: {
+          showMsg1(event) {
+            console.log(event);
+            console.log("按钮11111");
+          },
+          showMsg2(msg, a, b) {
+            console.log(msg, a, b);
+            console.log("按钮22222");
+          },
+          showMsg3(msg, event) {
+            console.log(msg, event);
+            console.log("按钮22222");
+          },
+          test1(event) {
+            // 进制a标签跳转网址 / 禁止默认行为
+            // event.preventDefault();
+          },
+          test2() {
+            console.log("test2事件触发了");
+          },
+          test3(event) {
+            console.log("test3事件触发了");
+          },
+          test4(event) {
+            // if (event.keyCode === 13) {
+            console.log("触发了enter");
+            // }
+          },
+        },
+      }).$mount("#example");
+    </script>
+  </body>
 </html>
