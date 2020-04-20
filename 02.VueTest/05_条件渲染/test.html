@@ -14,9 +14,50 @@
         如果需要频繁切换 v-show 较好
       -->
 
-    <div id="app "></div>
+    <div id="app">
+      <!-- 
+        v-if和v-else是一体，配合使用
+        当v-if是true时，就会显示，而v-else就隐藏
+        当v-if是false时，就会隐藏，而v-else就显示
+
+        当属性值是true时，往往可以省略不写
+       -->
+      <p v-if="a">aaa</p>
+      <!-- <p v-else="true">bbb</p> -->
+      <p v-else>bbb</p>
+
+      <p v-if="a">aaa~</p>
+      <p v-else-if="b">bbb~</p>
+      <p v-else>ccc~</p>
+
+      <!-- 
+        v-if 和 v-show 的区别
+          作用：都能实现DOM元素切换显示
+          v-if 在内存中干掉标签对象来实现隐藏，重新显示时会重新创建
+            DOM树中只有要显示的DOM元素，没有隐藏的
+          v-show 通过样式display来控制显示和隐藏的，显示标签没有样式，隐藏标签会加上 display: none
+            DOM树种所有DOM元素都有，只是隐藏的DOM元素有一个隐藏样式而已
+        
+        如果将来要频繁切换样式显示，用哪个性能好？
+          v-show性能好，
+            因为v-if要进行更多DOM操作：删除DOM元素，重新创建新的DOM元素
+            而v-show只要切换style样式即可
+        -->
+      <p v-show="a">aaa~~</p>
+      <p v-show="!a">bbb~~</p>
+
+      <!-- 内部会自动向vm上查找，所以不能写this -->
+      <button @click="a = !a">点击切换</button>
+    </div>
 
     <script type="text/javascript" src="../js/vue.js"></script>
-    <script type="text/javascript"></script>
+    <script type="text/javascript">
+      new Vue({
+        data: {
+          a: false,
+          b: false,
+        },
+      }).$mount("#app");
+    </script>
   </body>
 </html>

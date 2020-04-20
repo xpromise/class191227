@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>06_列表渲染</title>
-</head>
-<body>
-
-<!--
+  <head>
+    <meta charset="UTF-8" />
+    <title>06_列表渲染</title>
+  </head>
+  <body>
+    <!--
 1. 列表显示
   数组: v-for / index
   对象: v-for / key
@@ -15,16 +14,39 @@
   替换item
 -->
 
-<div id="demo">
-  <h2>测试: v-for 遍历数组</h2>
+    <div id="demo">
+      <h2>测试: v-for 遍历数组</h2>
+      <ul>
+        <!-- 
+          数据动态展示 
+          特别注意：遍历的每一项元素需要有一个唯一的key属性：值有id用id，没有id考虑使用index
+        -->
+        <li v-for="(person, index) in persons" :key="person.id">
+          {{person.id}} -- {{person.name}} -- {{person.age}} -- {{index}}
+        </li>
+      </ul>
+      <h2>测试: v-for 遍历对象</h2>
+      <ul>
+        <li v-for="(value, key) in person" :key="key">
+          {{key}} -- {{value}}
+        </li>
+      </ul>
+    </div>
 
-  <h2>测试: v-for 遍历对象</h2>
-
-</div>
-
-<script type="text/javascript" src="../js/vue.js"></script>
-<script type="text/javascript">
-
-</script>
-</body>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript">
+      new Vue({
+        data: {
+          persons: [
+            { id: 1, name: "jack", age: 20 },
+            { id: 3, name: "rose", age: 18 },
+            { id: 5, name: "jerry", age: 16 },
+            { id: 7, name: "tom", age: 18 },
+            { id: 8, name: "liqiang", age: 38 },
+          ],
+          person: { id: 1, name: "jack", age: 20 },
+        },
+      }).$mount("#demo");
+    </script>
+  </body>
 </html>
