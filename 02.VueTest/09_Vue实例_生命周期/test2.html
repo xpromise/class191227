@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <p :style="{opacity: opacity}">Vue学不会咋整？</p>
+      <button @click="goDie">不活了~</button>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+      /*
+      需求：
+        1. p标签透明度发生变化 0 - 1 - 0
+        2. 点击按钮，销毁vue
+
+          内存泄漏：有一个数据占用了一片内存，但是没有实际用途。没有释放
+            DOM事件、定时器、意外全局变量等
+          内存溢出：预期使用的内存，超过了实际内存。 超出了
+
+          当调用this.$destroy();
+            会自动解绑事件，所以没有DOM事件的内存泄漏
+            数据都是在data或methods中，一般也没有全局变量
+            但是定时器不会清除，所以需要手动清除定时器~
+    */
+
+      // 导致有全局变量，为了干掉一个内存泄漏，反而产生一个新的内存泄漏
+      // let timeId = null;
+
+      new Vue({
+        data: {
+          opacity: 0,
+          timeId: null,
+        },
+        methods: {
+          goDie() {
+            this.$destroy();
+          },
+        },
+        created() {
+          // console.log("created()");
+          this.timeId = setInterval(() => {
+            let opacity = this.opacity;
+            opacity += 0.01;
+            if (opacity >= 1) {
+              opacity = 0;
+            }
+            this.opacity = opacity;
+            console.log("setInterval()");
+          }, 1000 / 60);
+        },
+        beforeDestroy() {
+          clearInterval(this.timeId);
+        },
+      }).$mount("#app");
+    </script>
+  </body>
+</html>

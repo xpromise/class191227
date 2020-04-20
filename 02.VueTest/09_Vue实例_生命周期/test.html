@@ -62,11 +62,16 @@
             data数据更新完毕，页面也更新完毕
       
         - 销毁/死亡阶段(  this/vm.$destroy()触发，触发1次 )
-
           beforeDestroy 在销毁之前调用
           destroyed 在销毁之后调用
 
-      3. 有什么作用    
+      3. 重要生命周期函数（开发中常用）  
+        created / mounted 
+          发送AJAX请求、设置定时器等一次性任务
+          created速度更快一点点~
+        beforeDestroy 
+          做一些收尾工作：取消AJAX请求，清除定时器等
+
   */
 
       const vm = new Vue({
