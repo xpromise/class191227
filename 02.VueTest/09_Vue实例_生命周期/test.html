@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>09_Vue实例_生命周期</title>
-</head>
-<body>
-<!--
+  <head>
+    <meta charset="UTF-8" />
+    <title>09_Vue实例_生命周期</title>
+  </head>
+  <body>
+    <!--
 1. vue对象的生命周期
   1). 初始化显示
     * beforeCreate()
@@ -23,11 +23,95 @@
   beforeDestory(): 做收尾工作, 如: 清除定时器
 -->
 
-<div>
+    <div id="app">
+      <input type="text" v-model="a" />
+      <p ref="aaa">{{a}}</p>
+      <button @click="goDie">销毁</button>
+    </div>
 
-</div>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script type="text/javascript">
+      /*
+    Vue实例对象的生命周期函数：
+      1. 是什么？
+        Vue的实例从创建到更新到死亡经历的回调函数
+        这是函数由vue内部自己调用
+      2. 有哪些生命周期函数？
+        https://cn.vuejs.org/v2/guide/instance.html#%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E5%9B%BE%E7%A4%BA
 
-<script type="text/javascript" src="../js/vue.js"></script>
-<script type="text/javascript"></script>
-</body>
+        - 初始化渲染阶段（new Vue()产生，只会执行1次）
+          beforeCreate 
+            注意：不能创建vm之前触发的，此时已经创建了vm
+            在实现数据代理和监听之前调用的~ 
+            所以：不能访问data/methods数据
+          created 
+            在实现数据代理和监听之后调用的~
+            可以访问所有数据了~
+          beforeMount
+            在页面挂载（渲染）之前触发
+          mounted
+            在页面挂载（渲染）之后触发
+            
+          
+        - 更新阶段（当data数据发生变化，就会自动更新, 触发n次）
+          beforeUpdate 
+            在更新之前触发
+            此时data数据已经更新完毕，但是页面没有更新
+          updated 
+            在更新之后触发
+            data数据更新完毕，页面也更新完毕
+      
+        - 销毁/死亡阶段(  this/vm.$destory()触发，触发1次 )
+
+          beforeDestory 在销毁之前调用
+          destoryed 在销毁之后调用
+
+      3. 有什么作用    
+  */
+
+      const vm = new Vue({
+        data: {
+          a: 123,
+        },
+        methods: {
+          goDie() {
+            // vm.$destroy();
+            this.$destroy();
+          },
+        },
+        beforeCreate() {
+          // console.log(this.a);
+          console.log("beforeCreate()");
+        },
+        created() {
+          // console.log(this.a);
+          console.log("created()");
+        },
+        beforeMount() {
+          // console.log(this.a);
+          console.log("beforeMount()");
+        },
+        mounted() {
+          // console.log(this.a);
+          console.log("mounted()");
+        },
+        beforeUpdate() {
+          console.log(this.$refs.aaa.innerText);
+          // console.log(this.a);
+          console.log("beforeUpdate()");
+        },
+        updated() {
+          console.log(this.$refs.aaa.innerText);
+          // console.log(this.a);
+          console.log("updated()");
+        },
+        beforeDestroy() {
+          console.log("beforeDestroy()");
+        },
+        destroyed() {
+          console.log("destroyed()");
+        },
+      }).$mount("#app");
+    </script>
+  </body>
 </html>
