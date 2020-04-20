@@ -3,6 +3,14 @@
   <head>
     <meta charset="UTF-8" />
     <title>04_class与style绑定</title>
+    <style>
+      .red {
+        color: red;
+      }
+      .green {
+        color: green;
+      }
+    </style>
   </head>
   <body>
     <!--
@@ -20,15 +28,44 @@
 
     <div id="app">
       <h2>1. class绑定: :class='xxx'</h2>
-      <p>这是一段文字~</p>
-      <button>改变颜色</button>
+      <!-- class字符串形式：一般用于类名不确定时 -->
+      <p :class="className">今天天气真晴朗</p>
+      <button @click="changeColor1">点击切换颜色</button>
+      <!-- class字符串形式：一般用于类名确定 -->
+      <p :class="{red: isRed, green: !isRed}">今天天气真晴朗</p>
+      <button @click="changeColor2">点击切换颜色</button>
+      <!-- 原生HTML写法，没问题 -->
+      <p class="red green">今天天气真晴朗</p>
+      <!-- class数组形式：一般用于多个确定动态类名 -->
+      <p :class="['red', 'green']">今天天气真晴朗</p>
 
       <h2>2. style绑定</h2>
-      <p>这是一段文字~</p>
-      <input type="text" placeholder="请输入字体大小" />
+
+      <!-- 原生HTML写法 -->
+      <p style="font-size: 20px; color: red;">今天天气真晴朗</p>
+      <!-- Vue的style语法: 是一个对象形式，里面所有属性名都采用小驼峰命名法  -->
+      <p :style="{fontSize: size + 'px', color: 'red', marginLeft: '20px'}">
+        今天天气真晴朗
+      </p>
     </div>
 
     <script src="../js/vue.js"></script>
-    <script></script>
+    <script>
+      new Vue({
+        data: {
+          className: "red",
+          isRed: true,
+          size: 30,
+        },
+        methods: {
+          changeColor1() {
+            this.className = this.className === "red" ? "green" : "red";
+          },
+          changeColor2() {
+            this.isRed = !this.isRed;
+          },
+        },
+      }).$mount("#app");
+    </script>
   </body>
 </html>
