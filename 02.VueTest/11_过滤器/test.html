@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>11_过滤器</title>
-</head>
-<body>
-<!--
+  <head>
+    <meta charset="UTF-8" />
+    <title>11_过滤器</title>
+  </head>
+  <body>
+    <!--
 1. 理解过滤器
   功能: 对要显示的数据进行特定格式化后再显示
   注意: 并没有改变原本的数据, 可是产生新的对应的数据
@@ -19,14 +19,47 @@
     <div>{{myData | filterName}}</div>
     <div>{{myData | filterName(arg)}}</div>
 -->
-<!--需求: 对当前时间进行指定格式显示-->
-<div id="test">
-  <h2>显示格式化的日期时间</h2>
-</div>
+    <!--需求: 对当前时间进行指定格式显示-->
+    <div id="test">
+      <h2>显示格式化的日期时间</h2>
+      <!-- 使用过滤器: 使用dateFormat过滤器对nowTime处理，最终显示的是过滤器的返回值 -->
+      <p>{{nowTime | dateFormat}}</p>
+      <p>{{nowTime | dateFormat('YYYY年MM月DD日')}}</p>
+      <p>{{nowTime | dateFormat('HH:mm:ss')}}</p>
+      <p>{{nowTime | dateFormat2}}</p>
+    </div>
 
-<script type="text/javascript" src="../js/vue.js"></script>
-<script>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script src="https://cdn.bootcss.com/dayjs/1.8.24/dayjs.min.js"></script>
+    <script>
+      /*
+        对时间格式化处理，往往使用工具函数库
+          moment
+          dayjs
+          date-fns
+      */
+      // 全局过滤器：对所有vm生效
+      Vue.filter("dateFormat2", function (value) {
+        return dayjs(value).format("HH:mm");
+      });
 
-</script>
-</body>
+      new Vue({
+        data: {
+          nowTime: Date.now(), // 当前时间戳，单位ms
+        },
+        filters: {
+          // 局部过滤器: 只对当前vm生效
+          // 定义过滤器
+          // formatStr = "YYYY-MM-DD HH:mm:ss" 形参默认值
+          dateFormat(value, formatStr = "YYYY-MM-DD HH:mm:ss") {
+            // 日期格式化过滤器
+            // value就是nowTime
+            // dayjs(time) 产生time时间的日期对象
+            // xx.format('xxx') 格式化时间
+            return dayjs(value).format(formatStr);
+          },
+        },
+      }).$mount("#test");
+    </script>
+  </body>
 </html>
