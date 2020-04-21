@@ -31,7 +31,7 @@
       <!-- class字符串形式：一般用于类名不确定时 -->
       <p :class="className">今天天气真晴朗</p>
       <button @click="changeColor1">点击切换颜色</button>
-      <!-- class字符串形式：一般用于类名确定 -->
+      <!-- class对象形式：一般用于类名确定 -->
       <p :class="{red: isRed, green: !isRed}">今天天气真晴朗</p>
       <button @click="changeColor2">点击切换颜色</button>
       <!-- 原生HTML写法，没问题 -->
