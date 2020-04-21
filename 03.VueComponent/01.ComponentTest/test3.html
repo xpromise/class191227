@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <!-- 使用组件：以标签方式使用（组件标签） -->
+      <title-component></title-component>
+      <title-component></title-component>
+      <title-component></title-component>
+    </div>
+    <script src="../../02.VueTest/js/vue.js"></script>
+    <script>
+      // 定义局部组件
+      const TitleComponent = Vue.extend({
+        data() {
+          return {
+            title: "张三~~~",
+            count: 0,
+          };
+        },
+        template:
+          "<div><h1>{{title}} - {{count}}</h1><button @click='count++'>按钮</button></div>",
+      });
+
+      new Vue({
+        components: {
+          "title-component": TitleComponent,
+        },
+      }).$mount("#app");
+    </script>
+  </body>
+</html>
