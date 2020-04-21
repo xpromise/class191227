@@ -1,0 +1,13 @@
+{
+  "name": "vue-cli",
+  "version": "1.0.0",
+  "scripts": {},
+  "description": "自定义vue脚手架",
+  "main": "index.js",
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  }
+}
