@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <p>{{msg}}</p>
+      <button @click="msg += '~~~~'">按钮</button>
+
+      <ul>
+        <li v-for="(value, key) in person">
+          {{key}} -- {{value}}
+        </li>
+      </ul>
+      <button @click="person.age++">按钮</button>
+
+      <ul>
+        <li v-for="(person) in persons" :key="person.id">
+          {{person.id}} -- {{person.name}}
+        </li>
+      </ul>
+      <button @click="test">按钮</button>
+    </div>
+    <script src="../js/vue.js"></script>
+    <script>
+      new Vue({
+        data: {
+          // data中的数据都是响应式数据
+          msg: "hello zhangsan",
+          person: {
+            name: "jack",
+            age: 18,
+          },
+          persons: [
+            { id: 1, name: "a" },
+            { id: 2, name: "b" },
+            { id: 3, name: "c" },
+            { id: 4, name: "d" },
+            { id: 5, name: "e" },
+          ],
+        },
+        methods: {
+          test() {
+            // OK
+            // 修改原数组
+            /*
+              https://cn.vuejs.org/v2/guide/list.html#%E6%95%B0%E7%BB%84%E6%9B%B4%E6%96%B0%E6%A3%80%E6%B5%8B
+              变异方法 (mutation method)
+              push / sort方法之所以是响应式的，是因为vue重写了这些方法，
+              这些方法不但能起之前效果，一旦调用就会更新页面
+            */
+            // this.persons.push({ id: 6, name: "f" });
+            // this.persons.sort((a, b) => b.id - a.id);
+            // 说明vue内部对数组以及数组里面的值都进行监视，但是下标没有
+            // this.persons[0].name = "jack";
+            this.persons = [];
+
+            // 不OK  只会更新数据，不会更新页面
+            // this.persons[0] = { id: 7, name: "jack" };
+            // this.persons.length = 100;
+            // 解决
+            // this.persons.splice(0, 1, { id: 7, name: "jack" });
+          },
+        },
+      }).$mount("#app");
+    </script>
+  </body>
+</html>
