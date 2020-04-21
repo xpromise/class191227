@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <!-- 使用组件：以标签方式使用（组件标签） -->
+      <title-component></title-component>
+      <title-component></title-component>
+      <title-component></title-component>
+    </div>
+    <script src="../../02.VueTest/js/vue.js"></script>
+    <script>
+      /*
+        面试题：为什么组件中的data必须是函数形式？
+          Vue解析组件标签时，会找到组件的构造函数，创建组件实例对象，根据实例对象的内容进行显示
+          有三个组件标签，就会创建三个组件实例对象
+          此时，如果data使用的是对象形式，那么创建组件实例对象，进行数据代理，
+          三个组件实例对象代理的data数据是同一个对象。那么只要有一个变化，全都变（不OK）
+
+          每个组件应该要单独使用自己的数据。所以data要使用函数。
+          那么创建组件实例对象，进行数据代理，会调用data函数得到新data对象从而进行数据代理
+          每一个组件实例对象得到的是新的对象，互不影响
+
+        总结：
+          定义组件 组件构造函数 Vue.extend(options/配置对象)
+          注册组件 Vue.component(组件名称, 组件构造函数)
+          定义并注册组件 Vue.component(组件名称, options/配置对象)
+          options/配置对象 data、methods、computed、watch、filters、directives、template
+          使用组件 以标签组件使用 <xxx></xxx>
+            当你使用组件标签时，内部会找到组件的构造函数，创建组件实例对象
+      */
+      // 创建并注册一个组件
+      // 是Vue.extend + Vue.component 的简写
+      // 1. 内部先调用 Vue.extend 生成组件构造函数
+      // 2. 在调用 Vue.component 注册组件
+      Vue.component("title-component", {
+        data() {
+          return {
+            title: "张三~~~",
+            count: 0,
+          };
+        },
+        /*
+          [Vue warn]: The "data" option should be a function that returns a 
+                      data 选项应该是一个函数
+          per-instance value in component definitions.
+        */
+        // data: {
+        //   title: "张三~~~",
+        //   conut: 0,
+        // },
+        template:
+          "<div><h1>{{title}} - {{count}}</h1><button @click='count++'>按钮</button></div>",
+      });
+
+      new Vue({}).$mount("#app");
+    </script>
+  </body>
+</html>

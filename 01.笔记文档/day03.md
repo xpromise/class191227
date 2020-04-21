@@ -18,14 +18,14 @@ Vue 会自动给 vm（this/实例对象）添加一个直接 isShow 属性，并
    Vue 中 data 中所有数据都是响应式数据
    分为两种情况探讨：
    数组数据：内部也会 setter 监视，但是会有例外：
-   this.persons[0] = { id: 7, name: "jack" };
-   解决： this.persons.splice(0, 1, { id: 7, name: "jack" });
-   对象数据/其他类型数据：内部都会给属性添加 setter 进行监视，值一旦发生变化，即会更新值也会触发页面的更新
+      this.persons[0] = { id: 7, name: "jack" };
+      解决： this.persons.splice(0, 1, { id: 7, name: "jack" });
+   对象数据/其他类型数据：内部都会给属性添加 setter 进行监视，值一旦发生变 化，即会更新值也会触发页面的更新
 
 3. 响应式和非响应式
    响应式数据
-    data 中的所有数据（data 对象，data 函数返回的对象）
-    通过 vm.$set() / Vue.set() 设置的属性数据
+      data 中的所有数据（data 对象，data 函数返回的对象）
+      通过 vm.$set() / Vue.set() 设置的属性数据
    非响应式数据   
       手动给vm添加属性  
         this.msg2 = xxx

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="app">
+      <!-- 使用组件：以标签方式使用 -->
+      <title-component></title-component>
+    </div>
+    <script src="../../02.VueTest/js/vue.js"></script>
+    <script>
+      // 1. 创建组件的构造函数 Vue.extend(options/配置对象)
+      const Title = Vue.extend({
+        // 定义数据
+        data() {
+          return {
+            title: "法外狂徒张三~",
+          };
+        },
+        // 定义组件要渲染的模板页面
+        template: "<h1>{{title}}</h1>",
+      });
+      console.log(Title);
+      // 2. 全局注册一个组件(确定组件名称)
+      Vue.component("title-component", Title);
+
+      // new Vue({ el: "#app" });
+      new Vue({}).$mount("#app");
+    </script>
+  </body>
+</html>
