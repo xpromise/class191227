@@ -138,11 +138,47 @@
       cheap-source-map 提供简版代码映射（只包含行，没有列）
       module-source-map 提供node_modules中代码映射
       cheap-module-source-map 
+
+   8. 进行vue配置（让webpack能够解析vue资源）
+    https://vue-loader.vuejs.org/zh/guide/#vue-cli
+      
+        - 下载
+          npm install -D vue-loader vue-template-compiler
+            vue-loader 处理vue文件
+            vue-template-compiler 编译vue组件模板代码
+
+        - 配置
+
+          const VueLoaderPlugin = require('vue-loader/lib/plugin')
+
+          module.exports = {
+            module: {
+              rules: [
+                // ... 其它规则
+                {
+                  test: /\.vue$/,
+                  loader: 'vue-loader'
+                },
+                {
+                  test: /\.css$/,
+                  use: [
+                    'vue-style-loader',
+                    'css-loader'
+                  ]
+                }
+              ]
+            },
+            plugins: [
+              // 请确保引入这个插件！
+              new VueLoaderPlugin()
+            ]
+          }
 */
 // Nodejs的模块 path 专门用来处理文件路径
 const path = require("path");
 // 引入插件
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const VueLoaderPlugin = require("vue-loader/lib/plugin");
 /**
  * 封装一个处理绝对路径的方法
  * @param {String} relative 相对路径
@@ -166,6 +202,10 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.vue$/,
+        loader: "vue-loader",
+      },
+      {
         test: /\.js$/, // 规则对哪些文件生效
         // exclude: /node_modules/, // 排除node_modules文件，其他文件都检查
         include: [resolve("src")], // 包含src下面的文件，只检查包含的文件，而其他文件不检查
@@ -187,7 +227,11 @@ module.exports = {
         use: [
           // 执行顺序：从下到上 / 从右到左
           // 动态创建style标签，将js中css字符串添加，插入head中显示
-          "style-loader",
+          // "style-loader",
+          
+          // 它会应用到普通的 `.css` 文件
+          // 以及 `.vue` 文件中的 `<style>` 块
+          "vue-style-loader",
           // 将css编译成js字符串，以commonjs规则插入到js文件中
           "css-loader",
         ],
@@ -238,6 +282,9 @@ module.exports = {
       // 新HTML文件会自动引入webpack打包生成JS/CSS
       template: resolve("public/index.html"),
     }),
+    // 它的职责是将你定义过的其它规则复制并应用到 .vue 文件里相应语言的块。
+    // 例如，如果你有一条匹配 /\.js$/ 的规则，那么它会应用到 .vue 文件里的 <script> 块。
+    new VueLoaderPlugin(), 
   ],
   // 模式
   mode: "development",
