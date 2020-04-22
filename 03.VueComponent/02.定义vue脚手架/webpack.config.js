@@ -60,12 +60,79 @@
         },
 
   4. 处理html资源
+    - 下载依赖包(plugins既需要下载也需要引入)
+        npm i html-webpack-plugin -D
+        const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+    - 配置plugin
+        new HtmlWebpackPlugin({
+          template: resolve("public/index.html"),
+        })
+
   5. 处理其他资源（字体图标~）
+    - 下载依赖包
+        npm i file-loader -D (之前处理图片资源时，已经下载过了，所以不需要重新下载)
+
+    - 配置loader
+        {
+          exclude: [/\.js$/, /\.css$/, /\.html$/, /\.(png|gif|jpe?g|webp)$/],
+          use: {
+            loader: "file-loader",
+            options: {
+              name: "static/media/[hash:10].[ext]",
+            },
+          },
+        },
+
   6. 自动化
+    概念：
+      一旦修改源代码，会自动编译，接着自动刷新浏览器，从而看到最新的效果
+      第一次使用时，自动打开浏览器访问
+      （自动编译、自动刷新、自动打开浏览器等自动化任务）
+    如果没有自动化，每次写完代码，都需要重新编译打包刷新
+    有了自动化，自动编译打包刷新，我们开发者只需要看浏览器最新的结果就好了
+    作用：提升开发效率
+
+    - 下载依赖包 
+        npm i webpack-dev-server -D
+
+    - 配置    
+        devServer: {
+          contentBase: resolve("dist"),
+          port: 9527, 
+          host: "localhost", 
+          compress: true,
+          open: true, 
+          hot: true,
+        },
+      
+    - 启动指令
+      webpack 一定会有输出资源（输出到配置文件output.path去），不能启用devServer配置
+      webpack-dev-server 只在内存中编译打包，不会有任何输出，同时能启用devServer配置
+    - 配置启动指令
+      在package.json中配置启动指令
+        "scripts": {
+          "dev": "webpack-dev-server", // 代表启动开发环境指令
+          "start": "npm run dev" // 为了简写，npm start
+        }
+  
+  7. devtool 开发调试工具
+    source-map：提供构建后代码与源码映射关系文件
+    
+    所有代码（HTML/CSS/JS）经过webpack编译打包处理，
+    默认情况下会将所有js以eval方式汇总在一个js文件（built.js）中，后面实际运行就是这个文件built.js
+    一旦代码报错，正常情况下报错提示的是built.js代码错误，开发者不知道到底出了什么错误，不利于调试BUG
+
+    浏览器支持 source-map 技术，在webpack打包时会生成一个built.js.map文件，这个文件就会将
+    构建后代码和源码的关系记录起来（源代码在哪个文件第一行 对应 构建后代码第几行）
+    如果构建后built.js代码出错了，浏览器会找到built.js.map文件，根据构建后错误位置，
+    通过built.js.map文件， 就能追踪到源码的错误，从而浏览器提示源码的错误，方便调试
+    
 */
 // Nodejs的模块 path 专门用来处理文件路径
 const path = require("path");
-
+// 引入插件
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 /**
  * 封装一个处理绝对路径的方法
  * @param {String} relative 相对路径
@@ -139,10 +206,49 @@ module.exports = {
           },
         },
       },
+      {
+        // test: //,  // 不写test，代表匹配所有文件
+        exclude: [/\.js$/, /\.css$/, /\.html$/, /\.(png|gif|jpe?g|webp)$/],
+        use: {
+          // 作用：将文件加载，原封不动输出出去(只修改名称)
+          // 能处理所有类型文件
+          loader: "file-loader",
+          options: {
+            name: "static/media/[hash:10].[ext]",
+          },
+        },
+      },
     ],
   },
   // 插件
-  plugins: [],
+  plugins: [
+    new HtmlWebpackPlugin({
+      // 配置对象
+      // 以 public/index.html 文件为模板，创建基于这个文件的新HTML文件
+      // 新HTML文件会自动引入webpack打包生成JS/CSS
+      template: resolve("public/index.html"),
+    }),
+  ],
   // 模式
   mode: "development",
+  // 自动化，开发服务器
+  devServer: {
+    // contentBase: resolve('build'), // 开发服务器将哪个目录的资源暴露出去
+    contentBase: resolve("dist"), // 开发服务器将哪个目录的资源暴露出去
+    port: 9527, // 服务器端口号
+    host: "localhost", // 服务器域名,
+    // 启动gzip压缩（一种资源压缩格式gzip，这种压缩格式）
+    // 这种压缩格式浏览器可以识别，所以可以自动解压（反观zip文件浏览器是不识别，也不能解压的）
+    // 资源会在服务器先进行gzip压缩，文件体积就更小，传输速度就更快。性能更好
+    compress: true,
+    open: true, // 自动打开浏览器
+    // 热模块替换（Hot Module Replacement）
+    // 正常没有HMR功能，一旦有一个文件发生变化，整个页面会全部重新渲染
+    //（假设我有10000个文件，因为其中一个文件变化，导致所有文件全部重新编译加载更新，性能很差）
+    // HMR功能：一旦有一个文件发生变化，只会更新这变化的文件，其他文件默认使用之前缓存，速度快，性能好
+    // html文件在将来开发时只有一个，所以不需要HMR功能
+    // css文件，因为使用style-loader处理，默认使用HMR功能
+    // js文件，默认是没有使用HMR（即使开启了HMR，也需要手动写其他代码才可以使用）
+    hot: true,
+  },
 };

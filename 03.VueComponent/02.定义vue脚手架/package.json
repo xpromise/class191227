@@ -1,7 +1,10 @@
 {
   "name": "vue-cli",
   "version": "1.0.0",
-  "scripts": {},
+  "scripts": {
+    "dev": "webpack-dev-server",
+    "start": "npm run dev"
+  },
   "description": "自定义vue脚手架",
   "main": "index.js",
   "author": "",
