@@ -190,6 +190,20 @@
               ignore: ['index.html']
             },
           ]),    
+
+    10. 配置路径别名
+      resolve: {
+        alias: {
+          vue$: "vue/dist/vue.esm.js",
+          "@": resolve("src"),
+          "@comps": resolve("src/components"),
+        },
+      },
+  
+    11. 自动补全文件扩展名
+      resolve: {
+        extensions: [".js", ".vue", ".json"],
+      }
 */
 // Nodejs的模块 path 专门用来处理文件路径
 const path = require("path");
@@ -220,6 +234,7 @@ module.exports = {
   module: {
     rules: [
       {
+        // 解析vue文件
         test: /\.vue$/,
         loader: "vue-loader",
       },
@@ -280,13 +295,19 @@ module.exports = {
               ES6模块化识别不了 [object module]
               关闭ES6模块化，使用commonjs模块化就能识别了~
             */
-            esModule: false
+            esModule: false,
           },
         },
       },
       {
         // test: //,  // 不写test，代表匹配所有文件
-        exclude: [/\.js$/, /\.css$/, /\.html$/, /\.(png|gif|jpe?g|webp)$/, /\.vue$/],
+        exclude: [
+          /\.js$/,
+          /\.css$/,
+          /\.html$/,
+          /\.(png|gif|jpe?g|webp)$/,
+          /\.vue$/,
+        ],
         use: {
           // 作用：将文件加载，原封不动输出出去(只修改名称)
           // 能处理所有类型文件
@@ -339,9 +360,24 @@ module.exports = {
     // css文件，因为使用style-loader处理，默认使用HMR功能
     // js文件，默认是没有使用HMR（即使开启了HMR，也需要手动写其他代码才可以使用）
     hot: true,
-    quiet: true, // 启用静默模式，在终端不打印多余信息
+    // 如果webpack配置出错了，将 quiet: true 关掉，这样就会提示错误~
+    // quiet: true, // 启用静默模式，在终端不打印多余信息
     clientLogLevel: "none", // 在浏览器控制台不打印多余内容
   },
   devtool: "cheap-module-source-map", // 开发环境
   // devtool: "source-map", // 生产环境
+  resolve: {
+    // 帮助webpack解析模块（打包的资源）
+    alias: {
+      // 配置文件路径别名
+      // 当你路径写 vue 实际上代表的路径 vue/dist/vue.esm.js
+      // xxx$ 真正写路径时 $ 可以省略不写~
+      // 'vue$': "vue/dist/vue.esm.js",
+      "@": resolve("src"),
+      "@comps": resolve("src/components"),
+    },
+    // 解析模块路径时，如果没有文件扩展名，会按照数组顺序自动补全文件扩展名
+    // 自动补全文件扩展名
+    extensions: [".js", ".vue", ".json"],
+  },
 };
