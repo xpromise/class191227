@@ -75,7 +75,7 @@
 
     - 配置loader
         {
-          exclude: [/\.js$/, /\.css$/, /\.html$/, /\.(png|gif|jpe?g|webp)$/],
+          exclude: [/\.js$/, /\.css$/, /\.html$/, /\.(png|gif|jpe?g|webp)$/, /\.vue$/],
           use: {
             loader: "file-loader",
             options: {
@@ -173,12 +173,29 @@
               new VueLoaderPlugin()
             ]
           }
+
+   9. 打包public下面的静态资源
+        https://www.npmjs.com/package/copy-webpack-plugin
+
+        - 下载
+          npm install copy-webpack-plugin --save-dev
+        - 引入
+          const CopyPlugin = require('copy-webpack-plugin');
+        - 配置
+          new CopyPlugin([
+            { 
+              from: resolve('public'), 
+              to: resolve('dist'),
+              ignore: ['index.html']
+            },
+          ]),    
 */
 // Nodejs的模块 path 专门用来处理文件路径
 const path = require("path");
 // 引入插件
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const VueLoaderPlugin = require("vue-loader/lib/plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 /**
  * 封装一个处理绝对路径的方法
  * @param {String} relative 相对路径
@@ -228,7 +245,7 @@ module.exports = {
           // 执行顺序：从下到上 / 从右到左
           // 动态创建style标签，将js中css字符串添加，插入head中显示
           // "style-loader",
-          
+
           // 它会应用到普通的 `.css` 文件
           // 以及 `.vue` 文件中的 `<style>` 块
           "vue-style-loader",
@@ -262,7 +279,7 @@ module.exports = {
       },
       {
         // test: //,  // 不写test，代表匹配所有文件
-        exclude: [/\.js$/, /\.css$/, /\.html$/, /\.(png|gif|jpe?g|webp)$/],
+        exclude: [/\.js$/, /\.css$/, /\.html$/, /\.(png|gif|jpe?g|webp)$/, /\.vue$/],
         use: {
           // 作用：将文件加载，原封不动输出出去(只修改名称)
           // 能处理所有类型文件
@@ -284,7 +301,15 @@ module.exports = {
     }),
     // 它的职责是将你定义过的其它规则复制并应用到 .vue 文件里相应语言的块。
     // 例如，如果你有一条匹配 /\.js$/ 的规则，那么它会应用到 .vue 文件里的 <script> 块。
-    new VueLoaderPlugin(), 
+    new VueLoaderPlugin(),
+    // 复制文件
+    new CopyPlugin([
+      {
+        from: resolve("public"), // 将public下面的所有文件复制
+        to: resolve("dist"), // 复制到dist目录下去
+        ignore: ["index.html"], // 复制时忽略index.html文件（这个文件已经被HtmlWebpackPlugin处理了）
+      },
+    ]),
   ],
   // 模式
   mode: "development",
