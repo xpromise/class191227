@@ -104,6 +104,8 @@
           compress: true,
           open: true, 
           hot: true,
+          quiet: true, 
+          clientLogLevel: "none", 
         },
       
     - 启动指令
@@ -128,6 +130,14 @@
     如果构建后built.js代码出错了，浏览器会找到built.js.map文件，根据构建后错误位置，
     通过built.js.map文件， 就能追踪到源码的错误，从而浏览器提示源码的错误，方便调试
     
+    - 配置
+      devtool: "cheap-module-source-map", // 开发环境
+      devtool: "source-map", // 生产环境
+
+      source-map 提供完整代码映射（包括行和列）
+      cheap-source-map 提供简版代码映射（只包含行，没有列）
+      module-source-map 提供node_modules中代码映射
+      cheap-module-source-map 
 */
 // Nodejs的模块 path 专门用来处理文件路径
 const path = require("path");
@@ -250,5 +260,9 @@ module.exports = {
     // css文件，因为使用style-loader处理，默认使用HMR功能
     // js文件，默认是没有使用HMR（即使开启了HMR，也需要手动写其他代码才可以使用）
     hot: true,
+    quiet: true, // 启用静默模式，在终端不打印多余信息
+    clientLogLevel: "none", // 在浏览器控制台不打印多余内容
   },
+  devtool: "cheap-module-source-map", // 开发环境
+  // devtool: "source-map", // 生产环境
 };
