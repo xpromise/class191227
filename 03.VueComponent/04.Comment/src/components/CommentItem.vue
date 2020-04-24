@@ -1,7 +1,7 @@
 <template>
   <li class="list-group-item">
     <div class="handle">
-      <a href="javascript:;">删除</a>
+      <a href="javascript:;" @click.prevent="handleDel">删除</a>
     </div>
     <p class="user">
       <span>{{ comment.name }}</span>
@@ -19,6 +19,15 @@ export default {
       value 属性值的类型
     */
     comment: Object,
+    delComment: Function,
+  },
+  methods: {
+    handleDel() {
+      if (window.confirm(`您确认要删除评论吗?`)) {
+        // 确认要删除
+        this.delComment(this.comment.id);
+      }
+    },
   },
 };
 </script>

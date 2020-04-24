@@ -12,9 +12,9 @@
 
     <div class="container">
       <!-- 3. 使用组件 -->
-      <AddComment :addComment="addComment"/>
+      <AddComment :addComment="addComment" />
       <!-- 以props（标签属性）方式传递comments数据 -->
-      <CommentList :comments="comments" />
+      <CommentList :comments="comments" :delComment="delComment" />
     </div>
   </div>
 </template>
@@ -29,16 +29,24 @@ export default {
     return {
       // 定义数据
       comments: [
-        { id: 1, name: "jack", content: "I Love Rose" },
-        { id: 2, name: "rose", content: "I Love Jack" },
+        { id: 2, name: "jack", content: "I Love Rose" },
+        { id: 1, name: "rose", content: "I Love Jack" },
       ],
     };
   },
   methods: {
     // 数据源在哪里，更新数据的方法就定义在哪
+    // 添加评论方法
     addComment(comment) {
       // unshift是变异方法，既能更新数据，也能更新页面
       this.comments.unshift(comment);
+    },
+    // 删除评论方法
+    delComment(id) {
+      this.comments = this.comments.filter((comment) => comment.id !== id);
+      // this.xxx[0]
+      // this.xxx.age
+      // this.xxx
     },
   },
   components: {
