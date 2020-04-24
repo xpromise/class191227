@@ -3,13 +3,24 @@
     <div class="handle">
       <a href="javascript:;">删除</a>
     </div>
-    <p class="user"><span>xxx</span><span>说:</span></p>
-    <p class="centence">Vue不错!</p>
+    <p class="user">
+      <span>{{ comment.name }}</span>
+      <span>说:</span>
+    </p>
+    <p class="centence">{{ comment.content }}</p>
   </li>
 </template>
 
 <script>
-export default {};
+export default {
+  props: {
+    /*
+      key 要接受的属性名
+      value 属性值的类型
+    */
+    comment: Object,
+  },
+};
 </script>
 
 <style scoped>

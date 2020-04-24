@@ -13,7 +13,8 @@
     <div class="container">
       <!-- 3. 使用组件 -->
       <AddComment />
-      <CommentList />
+      <!-- 以props（标签属性）方式传递comments数据 -->
+      <CommentList :comments="comments" />
     </div>
   </div>
 </template>
@@ -24,6 +25,15 @@ import AddComment from "@comps/AddComment";
 import CommentList from "@comps/CommentList";
 
 export default {
+  data() {
+    return {
+      // 定义数据
+      comments: [
+        { id: 1, name: "jack", content: "I Love Rose" },
+        { id: 2, name: "rose", content: "I Love Jack" },
+      ],
+    };
+  },
   components: {
     // 2. 注册组件
     AddComment,
