@@ -20,11 +20,8 @@ import Footer from "@comps/Footer";
 export default {
   data() {
     return {
-      todos: [
-        { id: 1, name: "吃饭", completed: false },
-        { id: 2, name: "睡觉", completed: false },
-        { id: 3, name: "打猪", completed: true },
-      ],
+      // 因为有可能没有值，没有就是null，不行
+      todos: JSON.parse(window.localStorage.getItem("todos")) || [],
     };
   },
   methods: {
@@ -66,6 +63,21 @@ export default {
           如果没有，就不需要定义
       */
       this.todos = this.todos.filter((todo) => !todo.completed);
+    },
+  },
+  watch: {
+    // 浅度监视，只能监视todos的第一层属性的变化，todos里面对象监视不到
+    // todos(val) {
+    //   // 监视todos的变化，一旦变化就存储起来
+    //   window.localStorage.setItem("todos", JSON.stringify(val));
+    // },
+
+    // 深度监视：监视todos所有值的变化
+    todos: {
+      deep: true,
+      handler(val) {
+        window.localStorage.setItem("todos", JSON.stringify(val));
+      },
     },
   },
   components: {

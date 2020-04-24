@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Web Storage</title>
+  </head>
+  <body>
+    <script>
+      /*
+      Web Strorage 浏览器本地离线存储方案：用来存储大量数据（4mb）
+        localStorage 持久化存储（一直都有）
+        sessionStorage 会话存储
+        （打开浏览器访问网页：开始会话，关闭浏览器: 结束会话）
+          当浏览器没有关闭，存储不会消失，但是一旦关闭浏览器，存储会自动销毁
+
+        xxxStorage.setItem(key, value) 存储数据(注意：value必须是字符串类型)
+        xxxStorage.getItem(key) 读取数据
+        xxxStorage.removeItem(key) 删除单个数据
+        xxxStorage.clear() 删除全部数据
+    */
+      const user = { name: "jack", age: 18 };
+      // localStorage.setItem("user", JSON.stringify(user));
+      // console.log(JSON.parse(localStorage.getItem("user")));
+      // localStorage.removeItem("user");
+
+      // sessionStorage.setItem("user", JSON.stringify(user));
+      console.log(JSON.parse(sessionStorage.getItem("user"))); // 读取不存在的值，返回值是null
+    </script>
+  </body>
+</html>
