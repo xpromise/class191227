@@ -2,8 +2,12 @@
   <div class="todo-container">
     <div class="todo-wrap">
       <Header :addTodo="addTodo" />
-      <List :todos="todos" :updateTodo="updateTodo" :delTodo="delTodo"/>
-      <Footer />
+      <List :todos="todos" :updateTodo="updateTodo" :delTodo="delTodo" />
+      <Footer
+        :todos="todos"
+        :handleSelectAll="handleSelectAll"
+        :delCompletedTodo="delCompletedTodo"
+      />
     </div>
   </div>
 </template>
@@ -47,6 +51,21 @@ export default {
     // 删除todo
     delTodo(id) {
       this.todos = this.todos.filter((todo) => todo.id !== id);
+    },
+    // 全选/全部选
+    handleSelectAll(isSelectAll) {
+      this.todos.forEach((todo) => {
+        todo.completed = isSelectAll;
+      });
+    },
+    // 删除已选中的todo数据
+    delCompletedTodo() {
+      /*
+        要不要定义形参：看函数内部有没有值是不确定的。
+          如果有不确定的值，就需要定义，由外面传入
+          如果没有，就不需要定义
+      */
+      this.todos = this.todos.filter((todo) => !todo.completed);
     },
   },
   components: {
