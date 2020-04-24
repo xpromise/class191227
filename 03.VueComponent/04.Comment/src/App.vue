@@ -12,7 +12,7 @@
 
     <div class="container">
       <!-- 3. 使用组件 -->
-      <AddComment />
+      <AddComment :addComment="addComment"/>
       <!-- 以props（标签属性）方式传递comments数据 -->
       <CommentList :comments="comments" />
     </div>
@@ -33,6 +33,13 @@ export default {
         { id: 2, name: "rose", content: "I Love Jack" },
       ],
     };
+  },
+  methods: {
+    // 数据源在哪里，更新数据的方法就定义在哪
+    addComment(comment) {
+      // unshift是变异方法，既能更新数据，也能更新页面
+      this.comments.unshift(comment);
+    },
   },
   components: {
     // 2. 注册组件
