@@ -1,5 +1,18 @@
 <template>
-  <li>
+  <!-- 
+    mouseenter/mouseleave （通常用法）
+      进入元素触发mouseover 离开元素触发mouseout
+      和子元素无关
+    mouseover/mouseout 
+      进入元素触发mouseover 离开元素触发mouseout
+      如果进入子元素，会触发父元素mouseout / 子元素mouseover
+      问题：导致事件触发n次
+   -->
+  <li
+    @mouseenter="handleEnter(true)"
+    @mouseleave="handleEnter(false)"
+    :style="{ backgroundColor: bgColor }"
+  >
     <label>
       <!-- 
           v-model是双向数据绑定，
@@ -10,7 +23,9 @@
       <input type="checkbox" v-model="isCompleted" />
       <span>{{ todo.name }}</span>
     </label>
-    <button class="btn btn-danger" style="display:none">删除</button>
+    <button class="btn btn-danger" v-show="isShow" @click="handleDel">
+      删除
+    </button>
   </li>
 </template>
 
@@ -19,6 +34,35 @@ export default {
   props: {
     todo: Object,
     updateTodo: Function,
+    delTodo: Function,
+  },
+  data() {
+    return {
+      bgColor: "#fff",
+      isShow: false,
+    };
+  },
+  methods: {
+    /* handleEnter() {
+      // 显示当前元素背景色 #ccc 同时显示删除按钮
+      this.bgColor = "#ccc";
+      this.isShow = true;
+    },
+    handleLeave() {
+      // 显示当前元素背景色 #fff 同时隐藏删除按钮
+      this.bgColor = "#fff";
+      this.isShow = false;
+    }, */
+    handleEnter(isEnter) {
+      this.isShow = isEnter;
+      this.bgColor = isEnter ? "#ccc" : "#fff";
+    },
+    handleDel() {
+      // 所有删除操作都要给与一定的警告提示（防止用户误操作）
+      if (window.confirm("你确认要删除当前todo数据吗?")) {
+        this.delTodo(this.todo.id);
+      }
+    },
   },
   computed: {
     // 计算属性
@@ -61,7 +105,7 @@ li label li input {
 
 li button {
   float: right;
-  display: none;
+  /* display: none; */
   margin-top: 3px;
 }
 

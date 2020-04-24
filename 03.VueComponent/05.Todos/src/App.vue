@@ -1,8 +1,8 @@
 <template>
   <div class="todo-container">
     <div class="todo-wrap">
-      <Header />
-      <List :todos="todos" :updateTodo="updateTodo"/>
+      <Header :addTodo="addTodo" />
+      <List :todos="todos" :updateTodo="updateTodo" :delTodo="delTodo"/>
       <Footer />
     </div>
   </div>
@@ -35,6 +35,18 @@ export default {
       // find方法 里面函数返回值true就找到了并返回找到的元素，返回值false就没找到就会继续找
       const todo = this.todos.find((todo) => todo.id === id);
       todo.completed = completed;
+    },
+    // 添加todo
+    // addTodo(todo) {
+    //   this.todos.unshift(todo);
+    // },
+    addTodo(name) {
+      // 设计函数：功能单一、使用简单
+      this.todos.unshift({ id: Date.now(), name, completed: false });
+    },
+    // 删除todo
+    delTodo(id) {
+      this.todos = this.todos.filter((todo) => todo.id !== id);
     },
   },
   components: {
