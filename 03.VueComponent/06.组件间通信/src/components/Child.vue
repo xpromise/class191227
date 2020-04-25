@@ -1,7 +1,15 @@
 <template>
   <div>
-    <h3>Child组件...</h3>
-    <button @click="add">添加</button>
+    <!-- 标题 -->
+    <!-- 专门接受父组件传递的标签数据~ -->
+    <slot name="title" ></slot>
+    <div>
+      <!-- 
+        列表数据 
+        强制绑定persons数据 （会将子组件persons数据传递父组件）
+      -->
+      <slot name="list" :persons="persons"></slot>
+    </div>
   </div>
 </template>
 
@@ -9,19 +17,13 @@
 export default {
   data() {
     return {
-      person: {
-        id: 2,
-        name: "rose",
-      },
+      persons: [
+        { id: 1, name: "jack" },
+        { id: 2, name: "rose" },
+      ],
     };
-  },
-  methods: {
-    add() {
-      // 通过原型链找到位于Vue原型对象上的vm，通过vm触发事件
-      this.$globalEventBus.$emit("add-person", this.person);
-    },
   },
 };
 </script>
 
-<style></style>
+<style scoped></style>

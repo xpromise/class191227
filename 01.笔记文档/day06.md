@@ -79,12 +79,75 @@ mounted() {
 ## 4. 消息订阅发布机制
 
 - API
+
   - 发布消息 PubSub.publish(msg, data);
   - 订阅消息 PubSub.subscribe(msg, callback);
   - 取消订阅消息 PubSub.unsubscribe(msg);
 
 - 注意
-  - 订阅消息只要做一次，通常在created中完成
+
+  - 订阅消息只要做一次，通常在 created 中完成
   - 发布消息可以多次
 
 - 适用于 祖孙/兄弟 通信
+
+## 5. 插槽
+
+- 作用：父组件向子组件传递标签数据
+- 默认插槽
+
+  - 父组件定义标签数据
+
+  ```vue
+  <Child>
+    <template>xxx</template>
+  </Child>
+  ```
+
+  - 子组件接受使用
+
+  ```vue
+  <slot></slot>
+  ```
+
+- 问题：多个标签只能渲染到一个位置，不能选择多个渲染位置
+- 适用于只有一个标签数据
+
+- 具名/命名插槽
+
+  - 父组件定义标签数据
+
+  ```vue
+  <Child>
+    <template v-slot:title>xxx</template>
+    <template #title>xxx</template>
+  </Child>
+  ```
+
+  - 子组件接受使用
+
+  ```vue
+  <slot name="title"></slot>
+  ```
+
+- 问题：不能获取子组件数据渲染
+- 适用于有多个标签数据
+
+- 作用域插槽
+
+  - 父组件声明接受数据
+
+  ```vue
+  <Child>
+    <template #title="data">{{data.perons}}</template>
+    <template #title="{ persons }">{{persons}}</template>
+  </Child>
+  ```
+
+  - 子组件传递数据
+
+  ```vue
+  <slot name="title" :persons="person"></slot>
+  ```
+
+- 适用于有多个标签数据，并且要接受子组件数据渲染
