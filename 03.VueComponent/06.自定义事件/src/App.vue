@@ -47,10 +47,18 @@ export default {
   mounted() {
     // 做一次性工作（异步）：发送请求、设置定时器、绑定自定义事件~
     // 页面渲染/挂载完成之后执行
-    // child组件实例对象绑定事件
+
+    // child组件实例对象绑定事件 绑定持久性事件
     this.$refs.child.$on("add-person", this.addPerson);
+    // 绑定一次性事件: 一旦事件触发一次后会自动解绑
+    // this.$refs.child.$once("add-person", this.addPerson);
+
     // App组件实例对象绑定事件
     // this.$on("add-person", this.addPerson);
+  },
+  beforeDestory() {
+    // 组件销毁之前，解绑自定义事件
+    this.$refs.child.$off("add-person", this.addPerson);
   },
   methods: {
     addPerson(person) {

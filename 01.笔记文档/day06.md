@@ -53,5 +53,11 @@ mounted() {
 
 - 触发事件方式: `this.$emit(eventName[, arg1, arg2...])`
 
+- API
+  - this.$on(eventName, callback) 绑定持久事件
+  - this.$once(eventName, callback) 绑定一次性事件
+  - this.$off(eventName, callback) 解绑事件
+  - this.$emit(eventName[, arg1, arg2...]) 触发事件
+
 - 注意：绑定自定义事件的组件对象A，那么触发事件组件对象也必须是A，其他组件不能触发（哪个组件绑定事件，只有这个组件可以触发，其他组件触发不了）
 - 作用：用于子组件向父组件通信
