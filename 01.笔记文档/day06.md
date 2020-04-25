@@ -34,3 +34,24 @@ document.body.onclick = function (event) {};
     - `this.$emit(eventName[, arg1, arg2...])`
     - []代表可选值（可传可不传）
   - 数据：arg1, arg2...
+
+3. 总结自定义事件
+
+- 绑定事件方式
+
+```js
+// 方式一
+<MyComponent @my-event="callback" />
+
+// 方式二
+<MyComponent ref="xxx" />
+
+mounted() {
+  this.$refs.xxx.$on('my-event', callback);
+}
+```
+
+- 触发事件方式: `this.$emit(eventName[, arg1, arg2...])`
+
+- 注意：绑定自定义事件的组件对象A，那么触发事件组件对象也必须是A，其他组件不能触发（哪个组件绑定事件，只有这个组件可以触发，其他组件触发不了）
+- 作用：用于子组件向父组件通信

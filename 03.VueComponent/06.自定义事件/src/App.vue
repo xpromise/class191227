@@ -16,7 +16,14 @@
       addPerson 触发事件传入什么参数，就能接受什么参数
       addPerson() 触发事件传入参数就无效了
     -->
-    <Child @add-person="addPerson" />
+    <!-- <Child @add-person="addPerson" /> -->
+
+    <!-- 
+      ref 获取DOM元素或组件实例对象
+        如果ref设置到普通html元素上，得到就是这个DOM元素
+        如果ref设置到组件上，得到就是组件实例对象
+     -->
+    <Child ref="child" />
   </div>
 </template>
 
@@ -30,6 +37,20 @@ export default {
     return {
       persons: [{ id: 1, name: "jack" }],
     };
+  },
+  // 生命周期函数
+  created() {
+    // 在数据代理之后执行
+    // 此时html元素还没有创建 / 组件的实例对象还没有创建
+    // console.log(this.$refs.child); // undefined
+  },
+  mounted() {
+    // 做一次性工作（异步）：发送请求、设置定时器、绑定自定义事件~
+    // 页面渲染/挂载完成之后执行
+    // child组件实例对象绑定事件
+    this.$refs.child.$on("add-person", this.addPerson);
+    // App组件实例对象绑定事件
+    // this.$on("add-person", this.addPerson);
   },
   methods: {
     addPerson(person) {
