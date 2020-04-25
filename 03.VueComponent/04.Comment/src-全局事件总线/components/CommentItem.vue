@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import PubSub from "pubsub-js";
 export default {
   props: {
     /*
@@ -25,8 +24,7 @@ export default {
     handleDel() {
       if (window.confirm(`您确认要删除评论吗?`)) {
         // 触发删除评论的事件
-        // this.$bus.$emit("del-comment", this.comment.id);
-        PubSub.publish("del-comment", this.comment.id);
+        this.$bus.$emit("del-comment", this.comment.id);
       }
     },
   },

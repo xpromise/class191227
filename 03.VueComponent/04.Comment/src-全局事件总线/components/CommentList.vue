@@ -22,9 +22,7 @@
 </template>
 
 <script>
-import PubSub from "pubsub-js";
 import CommentItem from "@comps/CommentItem";
-
 export default {
   data() {
     /*
@@ -38,31 +36,16 @@ export default {
       ],
     };
   },
-  created() {
-    // 定阅添加评论消息
-    PubSub.subscribe("add-comment", (msg, data) => {
-      console.log(msg); // 消息名称
-      console.log(data); // 消息数据
-      /*
-        Uncaught TypeError: Cannot read property 'addComment' of undefined
-        错误根本原因：this 是 undefined 
-        什么场景下this是undefined？
-          ES5严格模式下  
-            this --> window  --> undefined
-          原因：webpack中使用了babel --> ES6语法编译ES5以下语法（此时加上严格模式~）  
-        解决：箭头函数
-      */
-      this.addComment(data);
-    });
-
-    PubSub.subscribe("del-comment", (msg, data) => {
-      this.delComment(data);
-    });
+  mounted() {
+    // 绑定添加评论事件
+    this.$bus.$on("add-comment", this.addComment);
+    // 绑定删除评论事件
+    this.$bus.$on("del-comment", this.delComment);
   },
   beforeDestory() {
-    // 在组件销毁时，解绑消息
-    PubSub.unsubscribe("add-comment");
-    PubSub.unsubscribe("del-comment");
+    // 在组件销毁时，解绑事件
+    this.$bus.$off("add-comment", this.addComment);
+    this.$bus.$off("del-comment", this.delComment);
   },
   methods: {
     // 添加评论方法

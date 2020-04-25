@@ -31,8 +31,6 @@
 </template>
 
 <script>
-import PubSub from "pubsub-js";
-
 export default {
   data() {
     return {
@@ -50,8 +48,8 @@ export default {
         alert("输入的评论不能为空~");
         return;
       }
-      // 发布消息
-      PubSub.publish("add-comment", { id: Date.now(), name, content });
+      // 触发添加评论事件
+      this.$bus.$emit("add-comment", { name, content, id: Date.now() });
       // 清空输入的数据
       this.name = this.content = "";
     },
