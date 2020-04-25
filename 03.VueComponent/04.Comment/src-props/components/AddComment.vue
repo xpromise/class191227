@@ -32,6 +32,9 @@
 
 <script>
 export default {
+  props: {
+    addComment: Function,
+  },
   data() {
     return {
       name: "",
@@ -48,8 +51,8 @@ export default {
         alert("输入的评论不能为空~");
         return;
       }
-      // 触发添加评论事件
-      this.$bus.$emit("add-comment", { name, content, id: Date.now() });
+      // 添加评论
+      this.addComment({ id: Date.now(), name, content });
       // 清空输入的数据
       this.name = this.content = "";
     },

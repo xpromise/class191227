@@ -16,7 +16,6 @@
         v-for="comment in comments"
         :key="comment.id"
         :comment="comment"
-        :delComment="delComment"
       />
     </ul>
   </div>
@@ -25,9 +24,40 @@
 <script>
 import CommentItem from "@comps/CommentItem";
 export default {
-  // 声明要接受的属性
-  // 一旦声明接受comments属性，组件实例对象上就会自动添加comments属性
-  props: ["comments", "delComment"],
+  data() {
+    /*
+      数据定义在哪个组件中？
+        哪个组件需要数据显示，就定义哪个组件 CommentList
+    */
+    return {
+      comments: [
+        { id: 2, name: "jack", content: "I Love Rose" },
+        { id: 1, name: "rose", content: "I Love Jack" },
+      ],
+    };
+  },
+  mounted() {
+    // 绑定添加评论事件
+    this.$bus.$on("add-comment", this.addComment);
+    // 绑定删除评论事件
+    this.$bus.$on("del-comment", this.delComment);
+  },
+  beforeDestory() {
+    // 在组件销毁时，解绑事件
+    this.$bus.$off("add-comment", this.addComment);
+    this.$bus.$off("del-comment", this.delComment);
+  },
+  methods: {
+    // 添加评论方法
+    addComment(comment) {
+      // unshift是变异方法，既能更新数据，也能更新页面
+      this.comments.unshift(comment);
+    },
+    // 删除评论方法
+    delComment(id) {
+      this.comments = this.comments.filter((comment) => comment.id !== id);
+    },
+  },
   components: {
     CommentItem,
   },

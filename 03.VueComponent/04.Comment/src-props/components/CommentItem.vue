@@ -19,12 +19,13 @@ export default {
       value 属性值的类型
     */
     comment: Object,
+    delComment: Function,
   },
   methods: {
     handleDel() {
       if (window.confirm(`您确认要删除评论吗?`)) {
-        // 触发删除评论的事件
-        this.$bus.$emit("del-comment", this.comment.id);
+        // 确认要删除
+        this.delComment(this.comment.id);
       }
     },
   },

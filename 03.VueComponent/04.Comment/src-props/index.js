@@ -7,10 +7,6 @@ import Vue from "vue";
 import App from "./App";
 
 new Vue({
-  beforeCreate() {
-    // 定义全局事件总线对象
-    Vue.prototype.$bus = this;
-  },
   el: "#app", // public/index.html 对应上
   // 最终组件的内容渲染到页面元素上~
   render: (h) => h(App),
