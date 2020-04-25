@@ -17,8 +17,8 @@ export default {
   },
   methods: {
     add() {
-      // 通过原型链找到位于Vue原型对象上的vm，通过vm触发事件
-      this.$globalEventBus.$emit("add-person", this.person);
+      // 触发add-person事件，才能将person数据传递给App组件
+      this.$emit("add-person", this.person);
     },
   },
 };
