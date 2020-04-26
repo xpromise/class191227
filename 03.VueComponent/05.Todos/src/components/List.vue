@@ -23,6 +23,7 @@ export default {
     this.$bus.$on("add-todo", this.addTodo);
     this.$bus.$on("handle-select-all", this.handleSelectAll);
     this.$bus.$on("del-completed-todo", this.delCompletedTodo);
+    this.$bus.$emit("receive-todos", this.todos);
   },
   beforeDestory() {
     this.$bus.$off("add-todo", this.addTodo);

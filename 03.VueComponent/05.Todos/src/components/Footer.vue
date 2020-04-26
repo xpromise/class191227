@@ -23,7 +23,8 @@ export default {
       todos: [],
     };
   },
-  mounted() {
+  // 必须在挂载之前绑定事件，才能接受到List组件mounted的数据
+  created() {
     this.$bus.$on("receive-todos", (todos) => {
       this.todos = todos;
     });
