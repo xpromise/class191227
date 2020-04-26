@@ -11,6 +11,9 @@
 
 <script>
 export default {
+  props: {
+    addTodo: Function,
+  },
   data() {
     return {
       name: "",
@@ -26,8 +29,8 @@ export default {
         return;
       }
 
-      // 全局事件总线，触发事件
-      this.$bus.$emit("add-todo", name);
+      // this.addTodo({ id: Date.now(), name, completed: false });
+      this.addTodo(name);
 
       // 清空输入数据
       this.name = "";

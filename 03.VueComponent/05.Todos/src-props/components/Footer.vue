@@ -4,8 +4,15 @@
       <input type="checkbox" v-model="isSelectAll" />
     </label>
     <span>
-      <span>已完成{{ completedLength }}</span> / 全部{{ todos.length }}
-    </span>
+      <span>已完成{{ completedLength }}</span> / 全部{{ todos.length }}</span
+    >
+    <!-- 
+      表达式：
+          !!xxx 为了将xxx数据强制转换成布尔值
+          !xxx 为了xxx数据强制转换成布尔值并取反
+
+      @click="delCompletedTodo" 可以直接把父组件方法设置上去    
+    -->
     <button
       class="btn btn-danger"
       v-show="!!completedLength"
@@ -18,24 +25,23 @@
 
 <script>
 export default {
-  data() {
-    return {
-      todos: [],
-    };
-  },
-  mounted() {
-    this.$bus.$on("receive-todos", (todos) => {
-      this.todos = todos;
-    });
+  props: {
+    todos: Array,
+    handleSelectAll: Function,
+    delCompletedTodo: Function,
   },
   methods: {
     handleDel() {
       if (window.confirm("你确认要删除已选中的数据吗?")) {
-        this.$bus.$emit("del-completed-todo");
+        this.delCompletedTodo();
       }
     },
   },
   computed: {
+    // completedLength: {
+    //   get() {},
+    //   set() {}
+    // },
     completedLength() {
       // 属性读取的方法
       let length = 0;
@@ -59,7 +65,8 @@ export default {
             true 代表全选 --> 将todos的completed全改成true
             false 代表全不选 --> 将todos的completed全改成false
         */
-        this.$bus.$emit("handle-select-all", val);
+        // console.log(val);
+        this.handleSelectAll(val);
       },
     },
   },

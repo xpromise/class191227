@@ -1,33 +1,28 @@
 <template>
-  <ul class="todo-main">
-    <Item
-      v-for="todo in todos"
-      :key="todo.id"
-      :todo="todo"
-      :updateTodo="updateTodo"
-      :delTodo="delTodo"
-    />
-  </ul>
+  <div class="todo-container">
+    <div class="todo-wrap">
+      <Header :addTodo="addTodo" />
+      <List :todos="todos" :updateTodo="updateTodo" :delTodo="delTodo" />
+      <Footer
+        :todos="todos"
+        :handleSelectAll="handleSelectAll"
+        :delCompletedTodo="delCompletedTodo"
+      />
+    </div>
+  </div>
 </template>
 
 <script>
-import Item from "@comps/Item";
+import Header from "@comps/Header";
+import List from "@comps/List";
+import Footer from "@comps/Footer";
+
 export default {
   data() {
     return {
       // 因为有可能没有值，没有就是null，不行
       todos: JSON.parse(window.localStorage.getItem("todos")) || [],
     };
-  },
-  mounted() {
-    this.$bus.$on("add-todo", this.addTodo);
-    this.$bus.$on("handle-select-all", this.handleSelectAll);
-    this.$bus.$on("del-completed-todo", this.delCompletedTodo);
-  },
-  beforeDestory() {
-    this.$bus.$off("add-todo", this.addTodo);
-    this.$bus.$off("handle-select-all", this.handleSelectAll);
-    this.$bus.$off("del-completed-todo", this.delCompletedTodo);
   },
   methods: {
     // 更新todo的方法
@@ -42,6 +37,10 @@ export default {
       const todo = this.todos.find((todo) => todo.id === id);
       todo.completed = completed;
     },
+    // 添加todo
+    // addTodo(todo) {
+    //   this.todos.unshift(todo);
+    // },
     addTodo(name) {
       // 设计函数：功能单一、使用简单
       this.todos.unshift({ id: Date.now(), name, completed: false });
@@ -67,37 +66,37 @@ export default {
     },
   },
   watch: {
+    // 浅度监视，只能监视todos的第一层属性的变化，todos里面对象监视不到
+    // todos(val) {
+    //   // 监视todos的变化，一旦变化就存储起来
+    //   window.localStorage.setItem("todos", JSON.stringify(val));
+    // },
+
     // 深度监视：监视todos所有值的变化
     todos: {
       deep: true,
       handler(val) {
-        // 将todos传递给Footer组件
-        this.$bus.$emit("receive-todos", this.todos);
         window.localStorage.setItem("todos", JSON.stringify(val));
       },
     },
   },
   components: {
-    Item,
+    Header,
+    List,
+    Footer,
   },
 };
 </script>
 
 <style scoped>
-/*main*/
-.todo-main {
-  margin-left: 0px;
-  border: 1px solid #ddd;
-  border-radius: 2px;
-  padding: 0px;
+/*app*/
+.todo-container {
+  width: 600px;
+  margin: 0 auto;
 }
-
-.todo-empty {
-  height: 40px;
-  line-height: 40px;
+.todo-container .todo-wrap {
+  padding: 10px;
   border: 1px solid #ddd;
-  border-radius: 2px;
-  padding-left: 5px;
-  margin-top: 10px;
+  border-radius: 5px;
 }
 </style>
