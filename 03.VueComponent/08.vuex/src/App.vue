@@ -4,7 +4,7 @@
       clicked: {{ $store.state.count }} times, count is
       {{ $store.getters.oddOrEven }}
     </p> -->
-
+    <p v-lower-text="'HELLO atguigu'"></p>
     <p>
       clicked: {{ count }} times, count is
       {{ oddOrEven }}
@@ -36,6 +36,7 @@ export default {
           触发mutations this.$store.commit('xxx')
     */
     // console.log(this.$store);
+    this.$vmMethod();
   },
   computed: {
     // oddOrEven() {
