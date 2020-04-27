@@ -45,10 +45,6 @@ import App from "./App";
 Vue.use(VueResource);
 
 new Vue({
-  beforeCreate() {
-    // 定义全局事件总线对象
-    Vue.prototype.$bus = this;
-  },
   el: "#root",
   render: (h) => h(App),
 });
