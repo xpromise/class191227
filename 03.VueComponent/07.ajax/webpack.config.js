@@ -249,7 +249,25 @@ module.exports = {
           loader: "babel-loader",
           options: {
             // 配置对象
-            presets: ["@babel/preset-env"], // 预设，babel要干什么活
+            presets: [
+              // 预设，babel要干什么活
+              [
+                "@babel/preset-env",
+                {
+                  // 配置按需加载
+                  useBuiltIns: "usage",
+                  corejs: { version: 3 },
+                  targets: {
+                    // 兼容性
+                    ie: 9,
+                    chrome: 60,
+                    firefox: 50,
+                    edge: 17,
+                    safari: 11,
+                  },
+                },
+              ],
+            ],
             plugins: [], // 插件
           },
         },
