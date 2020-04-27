@@ -23,6 +23,10 @@ export default {
     search() {
       // 收集数据
       const searchName = this.searchName.trim();
+      if (!searchName) {
+        alert("请输入搜索名称");
+        return;
+      }
       // 触发事件
       this.$bus.$emit("search-name", searchName);
     },

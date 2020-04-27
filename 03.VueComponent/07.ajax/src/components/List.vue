@@ -71,8 +71,17 @@ export default {
         this.isLoading = false;
       } catch (e) {
         console.log(e);
-
+        /*
+          1. 直接调为 离线 状态，搜索就会提示 errorMsg
+          2. 如果先搜索成功，再调为 离线 状态，这时候就不会提示 errorMsg，而是之前成功的数据
+            为什么？
+              第一次搜索成功，此时users变成数组
+              第二次搜索失败，此时users还是上一次的值，是数组
+                因为if - else的关系，导致users生效，后面的就不生效了~
+            解决：一旦搜索失败，将users置为null
+        */
         // 更新data
+        this.users = null;
         this.isLoading = false;
         this.errorMsg = "网络出现故障，请刷新试试~";
       }
