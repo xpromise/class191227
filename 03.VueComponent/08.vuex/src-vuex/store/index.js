@@ -15,7 +15,7 @@ const state = {
   用来触发更新（间接更新）的方法对象
 */
 const actions = {
-  /* increment(context) {
+  increment(context) {
     // 触发mutaion调用（传入标识名称）
     context.commit("INCREMENT");
   },
@@ -23,7 +23,7 @@ const actions = {
   decrement({ commit }) {
     // 触发mutaion调用（传入标识名称）
     commit("DECREMENT");
-  }, */
+  },
   incrementIfOdd({ commit, state }) {
     // 判断是否是奇数
     // state 之前state数据（未更新的state）
@@ -51,18 +51,6 @@ const mutations = {
 };
 
 /*
-  用来定义计算属性的getter方法
-    为什么getter 没有 setter？ 
-      因为为了保证数据是可追踪的，必须经历mutation更新才行
-      所以更新数据都是得调用mutation方法，而不能直接更新，所以没有设置setter
-*/
-const getters = {
-  oddOrEven(state) {
-    return state.count % 2 === 1 ? "奇数" : "偶数";
-  },
-};
-
-/*
   store就是管理vuex的对象
     有读取state数据的方法
     有触发更新的方法（acions/mutaions）
@@ -71,7 +59,6 @@ const store = new Vuex.Store({
   state,
   actions,
   mutations,
-  getters,
 });
 
 export default store;
