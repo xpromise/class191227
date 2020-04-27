@@ -363,6 +363,34 @@ module.exports = {
     // 如果webpack配置出错了，将 quiet: true 关掉，这样就会提示错误~
     quiet: true, // 启用静默模式，在终端不打印多余信息
     clientLogLevel: "none", // 在浏览器控制台不打印多余内容
+
+    // 启用代理服务器
+    proxy: {
+      /*
+        一旦请求发送到代理服务器上，就会自动将请求转发到目标服务器上
+        问题：
+          如果将来服务器可能有多个，目标服务器地址就有多个
+          当前配置只能访问一个服务器
+      */
+      // '/': 'http://localhost:3000'
+
+      /*
+        一旦请求是以 /api 开头，就会将请求自动转发到目标服务器上
+        但是访问地址是 http://localhost:3000/api/xxx
+        问题：访问地址多一个 /api，导致请求 404
+      */
+      // '/api': 'http://localhost:3000',
+      // '/xxx': 'http://localhost:xxxx'
+
+      "/api": {
+        target: "http://localhost:3000", // 目标服务器地址
+        pathRewrite: {
+          // 重写请求地址
+          "^/api": "", // 将/api重写为''(去掉请求地址的/api)
+        },
+        changeOrigin: true, // 即使是一个跨域请求也支持
+      },
+    },
   },
   devtool: "cheap-module-source-map", // 开发环境
   // devtool: "source-map", // 生产环境

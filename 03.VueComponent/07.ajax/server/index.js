@@ -5,7 +5,7 @@ const app = express();
 // 启动服务器 node index.js
 
 // 解决跨域
-app.use((req, res, next) => {
+/* app.use((req, res, next) => {
   // 允许跨域的地址
   res.set("Access-Control-Allow-Origin", "*");
   // 允许跨域的请求方式
@@ -24,7 +24,7 @@ app.use((req, res, next) => {
   }
 
   next();
-});
+}); */
 
 // 请求地址： http://localhost:3000/search
 app.get("/search", function(req, res) {

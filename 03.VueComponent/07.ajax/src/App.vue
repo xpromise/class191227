@@ -28,7 +28,16 @@ export default {
     // 发送ajax请求
     // vue-resource
     // const url = `https://api.github.com/search/repositories?q=v&sort=stars`;
-    const url = `http://localhost:3000/search`;
+
+    // 目标服务器请求地址：导致跨域
+    // const url = `http://localhost:3000/search`;
+    // 将地址改成代理服务器
+    // const url = `http://localhost:9527/search`;
+
+    // const url = `http://localhost:9527/v1/api/search`;
+    // const url2 = `http://localhost:9527/v2/api/user`;
+    const url = `http://localhost:9527/api/search`;
+
     /* this.$http
       .get(url)
       .then((response) => {
