@@ -14,7 +14,7 @@
       </li>
     </ul>
     <!-- 显示当前路由组件 -->
-    <router-view msg="123"></router-view>
+    <router-view></router-view>
   </div>
 </template>
 
