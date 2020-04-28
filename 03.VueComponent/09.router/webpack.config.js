@@ -229,6 +229,7 @@ module.exports = {
   output: {
     path: undefined, // 输出的目录
     filename: "built.js", // 输出文件名
+    publicPath: '/' // 所有webpack输出资源的公共路径
   },
   // 加载器
   module: {
@@ -409,6 +410,8 @@ module.exports = {
         changeOrigin: true, // 即使是一个跨域请求也支持
       },
     },
+    // 当使用 HTML5 History API 时，任意的 404 响应都可能需要被替代为 index.html
+    historyApiFallback: true,
   },
   devtool: "cheap-module-source-map", // 开发环境
   // devtool: "source-map", // 生产环境

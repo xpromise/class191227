@@ -14,6 +14,8 @@ Vue.use(VueRouter);
 
 // 创建路由器对象
 const router = new VueRouter({
+  // 指定模式 hash / history
+  mode: "history",
   routes: [
     // 路由配置
     {
