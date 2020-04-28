@@ -15,7 +15,14 @@
 </template>
 
 <script>
-export default {};
+export default {
+  created() {
+    console.log("home created()");
+  },
+  beforeDestroy() {
+    console.log("home beforeDestroy()");
+  },
+};
 </script>
 
 <style></style>

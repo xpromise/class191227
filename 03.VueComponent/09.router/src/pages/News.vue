@@ -14,6 +14,8 @@ export default {
     };
   },
   created() {
+    console.log("news created()");
+
     setTimeout(() => {
       const news = [
         { id: 1, content: "news001" },
@@ -24,6 +26,9 @@ export default {
 
       this.news = news;
     }, 1000);
+  },
+  beforeDestroy() {
+    console.log("news beforeDestroy()");
   },
 };
 </script>

@@ -6,6 +6,7 @@ import Home from "../pages/Home";
 import About from "../pages/About";
 import News from "../pages/News";
 import Message from "../pages/Message";
+import MessageDetail from "../pages/MessageDetail";
 
 // 凡是Vue插件都需要做
 // 安装插件 / 声明使用插件
@@ -20,7 +21,7 @@ const router = new VueRouter({
       // 当路径变成 /home 时，当前路由组件就是 Home
       path: "/home",
       component: Home,
-      // 配置子路由 / 嵌套路由
+      // 配置子路由 / 嵌套路由 / 二级路由
       children: [
         {
           /*
@@ -37,6 +38,16 @@ const router = new VueRouter({
           */
           path: "message",
           component: Message,
+          // 子路由 / 三级路由
+          children: [
+            {
+              /*
+                :xxx 占位符，能匹配任意路径
+              */
+              path: "detail/:id",
+              component: MessageDetail,
+            },
+          ],
         },
         {
           // path: "/home",
