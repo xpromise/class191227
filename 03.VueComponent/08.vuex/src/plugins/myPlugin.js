@@ -42,6 +42,7 @@ function myPlugin(Vue) {
   Vue.directive("lower-text", function(el, binding) {
     el.textContent = binding.value.toLowerCase();
   });
+  
 }
 
 export default myPlugin;

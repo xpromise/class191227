@@ -38,6 +38,11 @@ app.get("/search", function(req, res) {
   });
 });
 
+/*
+  后台路由
+    key： /search/users
+    value： function () {}
+*/
 app.get("/search/users", function(req, res) {
   res.json({
     items: [

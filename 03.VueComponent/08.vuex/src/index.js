@@ -13,6 +13,9 @@ Vue.use(myPlugin);
 // 调用插件扩展的全局方法
 Vue.globalMethod();
 
+// 关闭生产环境的警告提示
+Vue.config.productionTip = false;
+
 new Vue({
   el: "#root",
   render: (h) => h(App),
