@@ -34,8 +34,18 @@
       <div class="col-xs-6">
         <div class="panel">
           <div class="panel-body">
-            <!-- 显示当前路由组件 -->
-            <router-view></router-view>
+            <!-- 
+              <keep-alive>子组件</keep-alive>
+              作用：缓存子组件
+              props：
+                include="home" 缓存home组件，其他组件不缓存
+                exclude="home" 排除home，其他组件都缓存
+             -->
+            <!-- <keep-alive include="home,about"> -->
+            <keep-alive exclude="home">
+              <!-- 显示当前路由组件 -->
+              <router-view></router-view>
+            </keep-alive>
           </div>
         </div>
       </div>

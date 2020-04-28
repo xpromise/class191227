@@ -16,6 +16,8 @@
 
 <script>
 export default {
+  // 给组件取名称
+  name: "home",
   created() {
     console.log("home created()");
   },

@@ -46,6 +46,8 @@ const router = new VueRouter({
               */
               path: "detail/:id",
               component: MessageDetail,
+              // 命名路由
+              name: "messageDetail",
               props: (route) => {
                 // 返回一个对象，这个对象中所有属性会以props方式传递给 MessageDetail 组件
                 return {

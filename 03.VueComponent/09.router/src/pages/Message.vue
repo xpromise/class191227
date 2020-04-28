@@ -6,13 +6,25 @@
           /home/message/detail/1?count=123
           /1 -> params参数
           ?count=123 -> query参数
+          路由导航链接
          -->
-        <router-link :to="`/home/message/detail/${item.id}?count=123`">
-          <!-- <router-link :to="'/home/message/detail/' + item.id"> -->
+        <!-- <router-link :to="`/home/message/detail/${item.id}?count=123`">
+          {{ item.content }}
+        </router-link> -->
+        <router-link
+          :to="{
+            name: 'messageDetail',
+            params: { id: item.id },
+            query: { count: 123 },
+          }"
+        >
           {{ item.content }}
         </router-link>
+        <button @click="push(item.id)">push</button>
+        <button @click="replace(item.id)">replace</button>
       </li>
     </ul>
+    <button @click="back">back</button>
     <!-- 显示当前路由组件 -->
     <router-view msg="123"></router-view>
   </div>
@@ -38,8 +50,26 @@ export default {
       this.messages = messages;
     }, 1000);
   },
-  beforeDestroy() {
-    console.log("message beforeDestroy()");
+  methods: {
+    push(id) {
+      // console.log(this);
+      // 添加一条浏览器历史记录（切换网址）
+      // 编程式导航
+      // this.$router.push(`/home/message/detail/${id}`);
+      this.$router.push({
+        // path: `/home/message/detail/${id}`,
+        name: "messageDetail",
+        params: { id },
+        query: { count: 123 },
+      });
+    },
+    replace(id) {
+      // 替换一条浏览器历史记录
+      this.$router.replace(`/home/message/detail/${id}`);
+    },
+    back() {
+      this.$router.back();
+    },
   },
 };
 </script>

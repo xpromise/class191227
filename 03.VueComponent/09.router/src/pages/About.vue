@@ -3,7 +3,15 @@
 </template>
 
 <script>
-export default {};
+export default {
+  name: 'about',
+  created() {
+    console.log("about created()");
+  },
+  beforeDestroy() {
+    console.log("about beforeDestroy()");
+  },
+};
 </script>
 
 <style></style>
