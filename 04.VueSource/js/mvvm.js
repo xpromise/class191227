@@ -21,6 +21,7 @@ function MVVM(options) {
   // 代理computed计算属性到vm上
   this._initComputed();
 
+  // observe将data数据变成响应式数据
   observe(data, this);
 
   // 编译模板
