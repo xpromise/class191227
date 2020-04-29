@@ -1,10 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>04_模板解析_事件指令</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>04_模板解析_事件指令</title>
+  </head>
+  <body>
+    <!-- 
+      const newShow = show.bind(vm/this);
+      button.addEventListener('click', newShow, false)
 
-</body>
+      button.addEventListener('click', show.bind(vm/this), false)
+        true 捕获
+        false 冒泡
+
+      const newFn = fn.bind(obj)
+      newFn() // this指向obj
+      fn() // this指向window   
+
+        1. 不会调用原函数，也不会改变原函数的this
+        2. 会返回一个新函数，改变新函数的this
+        3. 新函数内部还是会调用原函数
+     -->
+    <div id="root">
+      <button v-on:click="show">按钮</button>
+    </div>
+    <script src="./js/compile.js"></script>
+    <script src="./js/mvvm.js"></script>
+    <script src="./js/observer.js"></script>
+    <script src="./js/watcher.js"></script>
+    <script>
+      new MVVM({
+        el: "#root",
+        data: {
+          title: "hello vue",
+        },
+        methods: {
+          show() {
+            alert(this.title);
+          },
+        },
+      });
+    </script>
+  </body>
 </html>

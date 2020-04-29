@@ -52,6 +52,7 @@ Compile.prototype = {
 
       // 判断当前元素是否是元素节点
       if (me.isElementNode(node)) {
+        // 编译指令语法
         me.compile(node);
         // 判断当前元素是否文本节点
         // 并且里面是否有插值语法
@@ -70,22 +71,30 @@ Compile.prototype = {
   },
 
   compile: function (node) {
+    // 获取当前元素所有属性
     var nodeAttrs = node.attributes,
       me = this;
-
+    
     [].slice.call(nodeAttrs).forEach(function (attr) {
+      // 获取当个属性名 v-on:click
       var attrName = attr.name;
+      // 判断属性是否是指令属性 
       if (me.isDirective(attrName)) {
+        // 获取指令属性对应表达式
         var exp = attr.value;
+        // 截取指令属性 on:click
         var dir = attrName.substring(2);
         // 事件指令
         if (me.isEventDirective(dir)) {
+          // 给元素绑定事件
           compileUtil.eventHandler(node, me.$vm, exp, dir);
           // 普通指令
         } else {
           compileUtil[dir] && compileUtil[dir](node, me.$vm, exp);
         }
 
+        // 将编译好的属性给删除掉
+        // 只会删除指令属性，其他属性进不来
         node.removeAttribute(attrName);
       }
     });
@@ -166,12 +175,22 @@ var compileUtil = {
     });
   },
 
-  // 事件处理
+  /**
+   * 事件处理
+   * @param {*} node 元素节点 
+   * @param {*} vm 实例对象
+   * @param {*} exp 指令表达式 show
+   * @param {*} dir 指令 on:click
+   */
   eventHandler: function (node, vm, exp, dir) {
+    // 获取事件类型 ['on', 'click']
     var eventType = dir.split(":")[1],
+    // 获取事件回调函数
       fn = vm.$options.methods && vm.$options.methods[exp];
 
     if (eventType && fn) {
+      // 绑定事件监听
+      // 改变事件回调函数的this为vm fn.bind(vm)
       node.addEventListener(eventType, fn.bind(vm), false);
     }
   },
