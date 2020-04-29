@@ -74,11 +74,11 @@ Compile.prototype = {
     // 获取当前元素所有属性
     var nodeAttrs = node.attributes,
       me = this;
-    
+
     [].slice.call(nodeAttrs).forEach(function (attr) {
       // 获取当个属性名 v-on:click
       var attrName = attr.name;
-      // 判断属性是否是指令属性 
+      // 判断属性是否是指令属性
       if (me.isDirective(attrName)) {
         // 获取指令属性对应表达式
         var exp = attr.value;
@@ -169,7 +169,7 @@ var compileUtil = {
     // 判断函数是否存在并调用
     // this._getVMVal(vm, exp) --> 用来通过vm找到表达式对应的值
     updaterFn && updaterFn(node, this._getVMVal(vm, exp));
-
+    
     new Watcher(vm, exp, function (value, oldValue) {
       updaterFn && updaterFn(node, value, oldValue);
     });
@@ -177,7 +177,7 @@ var compileUtil = {
 
   /**
    * 事件处理
-   * @param {*} node 元素节点 
+   * @param {*} node 元素节点
    * @param {*} vm 实例对象
    * @param {*} exp 指令表达式 show
    * @param {*} dir 指令 on:click
@@ -185,7 +185,7 @@ var compileUtil = {
   eventHandler: function (node, vm, exp, dir) {
     // 获取事件类型 ['on', 'click']
     var eventType = dir.split(":")[1],
-    // 获取事件回调函数
+      // 获取事件回调函数
       fn = vm.$options.methods && vm.$options.methods[exp];
 
     if (eventType && fn) {
@@ -232,16 +232,20 @@ var updater = {
   },
 
   htmlUpdater: function (node, value) {
+    // 给node节点设置html内容
     node.innerHTML = typeof value == "undefined" ? "" : value;
   },
-
-  classUpdater: function (node, value, oldValue) {
+  /**
+   * 处理class方法
+   * @param {*} node
+   * @param {*} value 表达式的值。font
+   */
+  classUpdater: function (node, value) {
+    // 获取元素上的class属性的值 red
     var className = node.className;
-    className = className.replace(oldValue, "").replace(/\s$/, "");
-
-    var space = className && String(value) ? " " : "";
-
-    node.className = className + space + value;
+    // 给元素设置新的className
+    // 新的className=原来的class + ' ' + v-class设置的class
+    node.className = className + " " + value;
   },
 
   modelUpdater: function (node, value, oldValue) {
