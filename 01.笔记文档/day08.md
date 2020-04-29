@@ -101,7 +101,7 @@
     比如：当前项目路径：http://localhost:9527/home/news
          相对路径会以 http://localhost:9527/home （去掉最后一层路径）
   解决：将输出路径改成 / 开头，路径一定会以服务器根路径补充
-    实际路径  http://localhost:9527/    
+    实际路径  http://localhost:9527/
 
   最终：
     index.html 需要将 href="./bootstrap.css" 改成 href="/bootstrap.css"

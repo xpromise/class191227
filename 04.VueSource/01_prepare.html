@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+  </head>
+  <body>
+    <div id="test">尚硅谷IT教育</div>
+
+    <div id="demo">
+      <ul>
+        <li>test1</li>
+        <li>test2</li>
+        <li>test3</li>
+      </ul>
+    </div>
+
+    <!--
+1. [].slice.call(lis): 将伪数组转换为真数组
+2. node.nodeType: 得到节点类型
+3. Object.defineProperty(obj, propertyName, {}): 给对象添加属性(指定描述符)
+4. Object.keys(obj): 得到对象自身可枚举属性组成的数组
+5. obj.hasOwnProperty(prop): 判断prop是否是obj自身的属性
+6. DocumentFragment: 文档碎片(高效批量更新多个节点)
+-->
+
+    <script type="text/javascript">
+      // 1. [].slice.call(lis): 将伪数组转换为真数组
+
+      const arr1 = [1, 2, 3, 4];
+      const arr2 = arr1.slice(); // 将数组(截取/切片)复制一份出来
+      console.log(arr2);
+
+      /*
+        [].slice  
+          -->
+          const arr = [];
+          arr.slice
+
+        call/apply 强制改变函数this指向  
+      */
+      //  const arr3 = [];
+      //  const arr4 = [];
+      //  arr3.slice.call(arr4) // slice方法this是arr4 --> 所以内部处理的是arr4
+
+      const lis = document.getElementsByTagName("li");
+      console.log(lis); // 伪数组（没有数组的方法）
+      // ES5 将伪数组转换成真数组
+      const arr5 = [].slice.call(lis); // 相当于让list调用slice
+      // ES6 将伪数组转换成真数组
+      const arr6 = Array.from(lis);
+      console.log(arr5, arr6);
+
+      // 2. node.nodeType: 得到节点类型
+      /*
+        Node.ELEMENT_NODE 元素节点 1
+        Node.TEXT_NODE 文本节点 3
+        Node.DOCUMENT_FRAGMENT_NODE DocumentFragment 节点 11
+        Node.ATTRIBUTE_NODE 属性节点 2
+      */
+      const test = document.getElementById("test");
+      console.log(test.nodeType); // 1
+      const textNode = test.firstChild; // 取第一个子节点
+      console.log(textNode.nodeType); // 3
+
+      // 3. Object.defineProperty(obj, propertyName, {}): 给对象添加属性(指定描述符)
+      const person = {
+        firstName: "jack",
+        lastName: "rose",
+      };
+      Object.defineProperty(person, "fullname", {
+        // value: '',
+        // writable: true,
+        configurable: false, // 决定属性是否可以重新配置/删除
+        enumerable: true, // 决定属性是否可以被for in遍历
+        get() {
+          return this.firstName + "-" + this.lastName;
+        },
+        set(val) {
+          const [firstName, lastName] = val.split("-");
+          this.firstName = firstName;
+          this.lastName = lastName;
+        },
+      });
+
+      // 4. Object.keys(obj): 得到对象自身可枚举属性组成的数组
+      const obj = { name: "jack", age: 123 };
+      console.log(Object.keys(obj));
+      console.log(Object.values(obj));
+
+      // 5. obj.hasOwnProperty(prop): 判断prop是否是obj自身的属性
+      const obj1 = { name: "jack", age: 123 };
+      obj1.__proto__.sex = "男";
+
+      // for in 会遍历对象所有属性（包括原型上的属性，除了enumerable: false）
+      for (const key in obj1) {
+        // 判断属性是否是自身上（直接）的属性，而不是原型上的属性
+        if (obj1.hasOwnProperty(key)) {
+          console.log(key);
+        }
+      }
+
+      console.log(obj1);
+
+      // 6. DocumentFragment: 文档碎片(高效批量更新多个节点)
+      /*
+        <div id="demo">
+          <ul>
+            <li>test1</li>
+            <li>test2</li>
+            <li>test3</li>
+          </ul>
+        </div>
+
+        原：找到所有li元素，依次遍历修改值（操作三次DOM，性能不好）
+        现：
+          1. 创建文档碎片节点
+          2. 将要操作DOM元素复制到文档碎片节点
+          3. 操作文档碎片节点更新里面的DOM元素的值（在内存中操作，并不会影响页面，性能好）
+          4. 将操作完成文档碎片节点替换之前的DOM元素（操作一次DOM，性能更好）
+      */
+      // 1. 创建文档碎片节点
+      const fragment = document.createDocumentFragment();
+      // 2. 将要操作DOM元素复制到文档碎片节点
+      const demo = document.getElementById("demo");
+      // let child = demo.firstChild;
+      // fragment.appendChild(child);
+      let child;
+      while ((child = demo.firstChild)) {
+        fragment.appendChild(child);
+      }
+      // 3. 操作文档碎片节点更新里面的DOM元素的值（在内存中操作，并不会影响页面，性能好）
+      const lis2 = fragment.children[0].children;
+      const arr = [].slice.call(lis2);
+      arr.forEach((li) => {
+        li.textContent = "hello";
+      });
+      // 4. 将操作完成文档碎片节点替换之前的DOM元素（操作一次DOM，性能更好）
+      demo.appendChild(fragment);
+    </script>
+  </body>
+</html>
