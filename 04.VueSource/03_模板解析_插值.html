@@ -1,10 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>03_模板解析_表达式_vue</title>
-</head>
-<body>
-
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>03_模板解析_表达式_vue</title>
+  </head>
+  <body>
+    <!-- 
+      解析插值语法：
+        1. 获取插值语法的JS表达式
+        2. 对vm上找表达式对应的值
+        3. 渲染到元素上 p.textContent = val;
+      -->
+    <div id="root">
+      <p>{{wife.name}}</p>
+    </div>
+    <!-- <p>jack</p>  -->
+    <!-- <p>{{wife.name}}</p> -->
+    <!-- <p>rose</p>  -->
+    <script src="./js/compile.js"></script>
+    <script src="./js/mvvm.js"></script>
+    <script src="./js/observer.js"></script>
+    <script src="./js/watcher.js"></script>
+    <script>
+      new MVVM({
+        el: "#root",
+        data: {
+          name: "jack",
+          wife: {
+            name: "rose",
+          },
+        },
+      });
+    </script>
+  </body>
 </html>

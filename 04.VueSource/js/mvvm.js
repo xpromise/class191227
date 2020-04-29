@@ -23,6 +23,7 @@ function MVVM(options) {
 
   observe(data, this);
 
+  // 编译模板
   this.$compile = new Compile(options.el || document.body, this);
 }
 
