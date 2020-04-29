@@ -1,12 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>02_数据代理</title>
-</head>
-<body>
-
-<!--
+  <head>
+    <meta charset="UTF-8" />
+    <title>02_数据代理</title>
+  </head>
+  <body>
+    <!--
 1. vue数据代理: data对象的所有属性的操作(读/写)由vm对象来代理操作
 2. 好处: 通过vm对象就可以方便的操作data中的数据
 3. 实现:
@@ -14,6 +13,29 @@
   2). 所有添加的属性都包含get/set方法
   3). 在get/set方法中去操作data中对应的属性
 -->
+    <div id="root"></div>
+    <script src="./js/compile.js"></script>
+    <script src="./js/mvvm.js"></script>
+    <script src="./js/observer.js"></script>
+    <script src="./js/watcher.js"></script>
+    <script>
+      // debugger;
+      // 数据代理
+      const vm = new MVVM({
+        el: "#root",
+        data: {
+          name: "jack",
+        },
+      });
 
-</body>
+      // 代理读操作 getter
+      console.log(vm.name);
+      // 代理写操作 setter
+      vm.name = "tom";
+
+      // 原属性
+      console.log(vm._data.name);
+      vm._data.name = "jerry";
+    </script>
+  </body>
 </html>
