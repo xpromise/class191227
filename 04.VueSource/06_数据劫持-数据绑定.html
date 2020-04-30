@@ -11,6 +11,7 @@
   <body>
     <div id="root">
       <p>{{name}}</p>
+      <p v-text="name"></p>
       <p>{{wife.name}}</p>
       <button v-on:click="update">更新</button>
     </div>
@@ -19,6 +20,23 @@
     <script src="./js/observer.js"></script>
     <script src="./js/watcher.js"></script>
     <script>
+      /*
+        dep：data对象属性都有一个唯一的dep
+        watcher：
+          元素节点并且有普通指令语法 
+          文本节点并且有插值语法
+
+        data: {
+          name: "jack",   d0: w1 w2
+          wife: {         d1: w3
+            name: "rose", d2: w3
+          },
+        },
+
+        <p>{{name}}</p>        w1: d0
+        <p v-text="name"></p>  w2: d0
+        <p>{{wife.name}}</p>   w3: d1 d2
+      */
       new MVVM({
         el: "#root",
         data: {

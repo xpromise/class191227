@@ -8,9 +8,9 @@
 		writable: true/false value是否可以修改存取(访问)描述符
 		get: 函数, 用来得到当前属性值
 		set: 函数, 用来监视当前属性值的变化
-  	4.Object.keys(obj): 得到对象自身可枚举的属性名的数组
-  	5.DocumentFragment: 文档碎片(高效批量更新多个节点)
-  	6.obj.hasOwnProperty(prop): 判断prop是否是obj自身的属性
+	4.Object.keys(obj): 得到对象自身可枚举的属性名的数组
+	5.DocumentFragment: 文档碎片(高效批量更新多个节点)
+	6.obj.hasOwnProperty(prop): 判断prop是否是obj自身的属性
 
 ## 2. 数据代理(MVVM.js)
 	  1.通过一个对象代理对另一个对象中属性的操作(读/写)
