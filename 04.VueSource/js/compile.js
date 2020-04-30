@@ -170,6 +170,10 @@ var compileUtil = {
     // this._getVMVal(vm, exp) --> 用来通过vm找到表达式对应的值
     updaterFn && updaterFn(node, this._getVMVal(vm, exp));
     
+    /*
+      凡是 普通指令语法和插值语法 的元素会有watcher
+      watcher都会有一个更新用户界面回调函数
+    */
     new Watcher(vm, exp, function (value, oldValue) {
       updaterFn && updaterFn(node, value, oldValue);
     });

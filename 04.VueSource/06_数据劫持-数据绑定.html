@@ -36,6 +36,46 @@
         <p>{{name}}</p>        w1: d0
         <p v-text="name"></p>  w2: d0
         <p>{{wife.name}}</p>   w3: d1 d2
+
+        流程：new MVVM()
+          1. 数据代理 (_proxyData)
+            将data数据代理到vm上，并定义属性getter和setter
+              当调用getter时，内部实际上是读取原属性的值 vm._data[key]
+              当调用setter时，内部实际上是设置原属性的值 vm._data[key] = val;
+          2. 将data数据变成响应式数据 (observer)
+            递归遍历原data所有数据（不是vm上的数据/不是代理数据）重新定义属性的getter和setter
+            将其定义成响应式数据
+            同时每一个响应式属性都会有对应一个唯一的dep，这个dep通过闭包的方式保存在getter和setter中
+              getter
+                建立dep和watcher的联系
+                  在dep中通过subs保存多个watcher
+                  在watcher中通过depIds保存多个dep
+              setter
+                dep.notify() 通知当前dep中所有watcher去更新用户界面
+          3. 模板编译
+            1) 将el所有元素子节点添加到fragment文档碎片节点中
+            2) 编译fragment节点中模板语法
+              递归遍历fragment所有字节点
+                判断子节点元素类型 nodeType
+                  如果是元素节点 nodeType === 1
+                    获取元素所有属性，判断属性里面是否包含指令属性 v-
+                      事件指令属性 on
+                        node.addEventListener(eventType, cb.bind(vm), false)
+                      普通指令属性
+                        根据指令类型来执行不同的 updater 方法更新用户界面
+                        同时会创建一个watcher（此时会读取vm属性，最终会触发getter从而建立dep和watcher之间的联系）
+                      解析完指令属性后，最终移除元素上的指令语法属性
+                  如果是文本节点并且包含插值语法 nodeType === 3
+                    直接调用 textUpdater 更新用户界面
+                    同时会创建一个watcher（此时会读取vm属性，最终会触发getter从而建立dep和watcher之间的联系） 
+            3) 将编译好的fragment插入到el中生效
+
+          最后当用户更新data数据时， this.name = 'rose'
+          触发name的setter方法
+          调用dep.notify() 通知当前dep中所有watcher去更新用户界面
+          从而用户界面发生变化
+
+          总结：当数据更新时，即更新数据也更新用户界面。这样的数据就是响应式数据
       */
       new MVVM({
         el: "#root",

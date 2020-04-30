@@ -19,10 +19,15 @@ Watcher.prototype = {
     this.run();
   },
   run: function () {
+    // 读取属性最新的值
     var value = this.get();
+    // 读取属性上一次的值
     var oldVal = this.value;
+    // 如果值相等，就不更新
     if (value !== oldVal) {
+      // 将最新的值保存起来
       this.value = value;
+      // 调用更新用户界面的方法cb去更新
       this.cb.call(this.vm, value, oldVal);
     }
   },
@@ -41,9 +46,21 @@ Watcher.prototype = {
     // 这一步是在 this.get() --> this.getVMVal() 里面完成，forEach时会从父级开始取值，间接调用了它的getter
     // 触发了addDep(), 在整个forEach过程，当前wacher都会加入到每个父级过程属性的dep
     // 例如：当前watcher的是'child.child.name', 那么child, child.child, child.child.name这三个属性的dep都会加入当前watcher
+
+    // 判断有没有保存过dep（通过id判断）
     if (!this.depIds.hasOwnProperty(dep.id)) {
+      // 给dep保存watcher
+      // 为什么给dep保存watcher？
+      // 因为watcher有更新用户界面的方法，当dep对应的响应式数据发生变化，
+      // 就能通过dep找到所有的watcher，从而更新用户界面
       dep.addSub(this);
+      // 给watcher保存dep
+      // 为什么给watcher保存dep？
+      // 防止dep保存多次同一个watcher
       this.depIds[dep.id] = dep;
+      // 为什么dep保存watcher用subs数组？而watcher保存dep用depIds对象？
+      // this.depIds = { 0: dep0, 1: dep1 } 对象查找属性比数组遍历查找值快的多
+      // this.depIds = [0, 1] 就需要遍历，相当于要遍历所有元素
     }
   },
   get: function () {
