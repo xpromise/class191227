@@ -137,17 +137,24 @@ var compileUtil = {
   },
 
   model: function (node, vm, exp) {
+    // 给数据进行初始化显示
+    // node.value = xxx
     this.bind(node, vm, exp, "model");
 
     var me = this,
+      // 读取当前属性的值 
       val = this._getVMVal(vm, exp);
+    // 绑定input事件，监听元素的value的变化
     node.addEventListener("input", function (e) {
+      // 获取当前元素最新的值
       var newValue = e.target.value;
+      // 如果相等就不更新
       if (val === newValue) {
         return;
       }
-
+      // 更新data数据 --> 触发setter方法，从而更新用户界面
       me._setVMVal(vm, exp, newValue);
+      // 将当前值存起来，方便进行下一次比较~
       val = newValue;
     });
   },
@@ -215,6 +222,7 @@ var compileUtil = {
     return val; // 'rose'
   },
 
+  // 设置vm上对应表达式的值
   _setVMVal: function (vm, exp, value) {
     var val = vm;
     exp = exp.split(".");

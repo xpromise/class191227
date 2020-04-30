@@ -1,9 +1,36 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title>07_数据双向绑定</title>
-</head>
-<body>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <title>07_数据双向绑定</title>
+  </head>
+  <body>
+    <!-- 
+      v-model 怎么实现双向数据绑定？
+        node.addEventListener('input', function (ev) {
+          vm.msg = ev.target.val
+        }, false)
+
+      总结：
+        双向数据绑定：只能用于可以输入数据的元素 input textarea 
+        通过模板编译：实现数据由js data到页面显示
+        通过input事件: 实现数据由页面到js data 
+     -->
+    <div id="root">
+      <input type="text" v-model="msg" />
+      <p>{{msg}}</p>
+    </div>
+    <script src="./js/compile.js"></script>
+    <script src="./js/mvvm.js"></script>
+    <script src="./js/observer.js"></script>
+    <script src="./js/watcher.js"></script>
+    <script>
+      new MVVM({
+        el: "#root",
+        data: {
+          msg: "hello",
+        },
+      });
+    </script>
+  </body>
 </html>
