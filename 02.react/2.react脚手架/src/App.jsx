@@ -3,44 +3,62 @@
 */
 import React from "react";
 
-import Child from "./pages/Child";
-
+// 受控组件：通过state和onChange事件来自动收集表单数据
 class App extends React.Component {
   state = {
-    person: {
-      name: "晓飞张",
-      age: 40,
-      sex: "男",
-    },
+    username: "",
+    password: "",
   };
 
-  updatePerson = (person) => {
+  login = (e) => {
+    // 禁止表单的默认行为
+    e.preventDefault();
+    // 收集表单数据
+    const { username, password } = this.state;
+    console.log(username, password);
+    // 清空用户数据
     this.setState({
-      person,
+      username: "",
+      password: "",
+    });
+  };
+
+  // 封装一个函数，来复用一下两个函数？ 提示：高阶函数
+  handleUsernameChange = (e) => {
+    const username = e.target.value.trim();
+    this.setState({
+      username,
+    });
+  };
+
+  handlePasswordChange = (e) => {
+    const password = e.target.value.trim();
+    this.setState({
+      password,
     });
   };
 
   render() {
-    /*
-      需求：将person数据传递给Child组件
-      解决: 使用组件间通信 props
-        父 --> 子 通信 使用普通属性
-        子 --> 父 通信 使用函数属性
-    */
-    const { person } = this.state;
+    const { username, password } = this.state;
 
     return (
-      <div>
-        <h1>App...</h1>
-        {/* 以标签属性方式（props）给子组件传递数据 */}
-        <Child
-          // name={person.name}
-          // age={person.age}
-          // sex={person.sex}
-          {...person}
-          updatePerson={this.updatePerson}
+      <form onSubmit={this.login}>
+        用户名:
+        <input
+          type="text"
+          // 在React中，事件都是合成事件，不是原生DOM事件
+          // 合成事件：做了兼容性处理~
+          onChange={this.handleUsernameChange}
+          value={username}
         />
-      </div>
+        密码:
+        <input
+          type="password"
+          onChange={this.handlePasswordChange}
+          value={password}
+        />
+        <button type="submit">登录</button>
+      </form>
     );
   }
 }
