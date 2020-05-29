@@ -5,7 +5,7 @@ function FuncComp() {
   console.log("工厂函数", this);
 
   // 组件内部返回要渲染的虚拟DOM对象
-  return <div>FuncComp...</div>;
+  return <div>FuncComp...</div>; // React.createElement()
 }
 
 export default FuncComp;
