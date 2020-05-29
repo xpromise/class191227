@@ -23,8 +23,28 @@ class App extends React.Component {
     });
   };
 
-  // 封装一个函数，来复用一下两个函数？ 提示：高阶函数
-  handleUsernameChange = (e) => {
+  // 封装一个函数，来复用一下两个函数？ 提示：高阶函数（执行函数返回值是一个新函数）
+  /*
+    函数柯里化：
+      function fn(a, b) { return a + b} 普通函数
+        --> 经过函数柯里化处理的函数
+          function fn(a) {
+            return function (b) {
+              return a + b;
+            }
+          }
+      闭包的典型应用    
+  */
+  handleChange = (key) => {
+    // 返回一个新函数（事件回调函数）
+    return (e) => {
+      this.setState({
+        [key]: e.target.value.trim(),
+      });
+    };
+  };
+
+  /* handleUsernameChange = (e, stateKey) => {
     const username = e.target.value.trim();
     this.setState({
       username,
@@ -36,7 +56,7 @@ class App extends React.Component {
     this.setState({
       password,
     });
-  };
+  }; */
 
   render() {
     const { username, password } = this.state;
@@ -48,13 +68,13 @@ class App extends React.Component {
           type="text"
           // 在React中，事件都是合成事件，不是原生DOM事件
           // 合成事件：做了兼容性处理~
-          onChange={this.handleUsernameChange}
+          onChange={this.handleChange("username")}
           value={username}
         />
         密码:
         <input
           type="password"
-          onChange={this.handlePasswordChange}
+          onChange={this.handleChange("password")}
           value={password}
         />
         <button type="submit">登录</button>
