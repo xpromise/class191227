@@ -68,13 +68,13 @@ class App extends React.Component {
           type="text"
           // 在React中，事件都是合成事件，不是原生DOM事件
           // 合成事件：做了兼容性处理~
-          onChange={this.handleChange("username")}
+          onChange={this.handleChange('username')}
           value={username}
         />
         密码:
         <input
           type="password"
-          onChange={this.handleChange("password")}
+          onChange={this.handleChange('password')}
           value={password}
         />
         <button type="submit">登录</button>
