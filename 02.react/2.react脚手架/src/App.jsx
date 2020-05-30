@@ -65,6 +65,25 @@ class App extends Component {
     });
   };
 
+  delTodo = (id) => {
+    this.setState({
+      // 不能修改原数据，要返回一个全新的数据（React中的特点）
+      // 所有修改原数据的方法都不可以用，splice、push、unshift
+      todos: this.state.todos.filter((todo) => {
+        // 返回true保留 返回false过滤
+        return todo.id !== id;
+      }),
+    });
+  };
+
+  delCompletedTodos = () => {
+    this.setState({
+      todos: this.state.todos.filter((todo) => {
+        return !todo.isCompleted;
+      }),
+    });
+  };
+
   render() {
     // 读取state
     const { todos } = this.state;
@@ -80,11 +99,16 @@ class App extends Component {
       <div className="todo-container">
         <div className="todo-wrap">
           <Header addTodo={this.addTodo} />
-          <List todos={todos} updateTodo={this.updateTodo} />
+          <List
+            todos={todos}
+            updateTodo={this.updateTodo}
+            delTodo={this.delTodo}
+          />
           <Footer
             allCount={allCount}
             completedCount={completedCount}
             checkAll={this.checkAll}
+            delCompletedTodos={this.delCompletedTodos}
           />
         </div>
       </div>
