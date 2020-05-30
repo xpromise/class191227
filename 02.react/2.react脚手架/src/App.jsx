@@ -1,21 +1,20 @@
 import React, { Component } from "react";
-import PubSub from "pubsub-js";
 
-import Child from "./Child";
+/*
+  1. 将class --> className
+  2. 将没有结束符标签加上结束符：input img
+  3. 将style改成{{}}
+*/
+
+import List from "./pages/List";
+import Search from "./pages/Search";
 
 export default class App extends Component {
-  handleClick = () => {
-    // 发送消息
-    console.log("App组件发送了数据~");
-    PubSub.publish("RECEIVE_DATA", "您真好看~");
-  };
-
   render() {
     return (
-      <div>
-        App...
-        <button onClick={this.handleClick}>点击按钮向子组件传递数据</button>
-        <Child />
+      <div className="container">
+        <Search />
+        <List />
       </div>
     );
   }
