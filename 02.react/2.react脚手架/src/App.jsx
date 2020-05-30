@@ -1,119 +1,111 @@
-/*
- 应用主组件
-*/
 import React, { Component } from "react";
+import ReactDOM from "react-dom";
 
-import Header from "./pages/Header";
-import Footer from "./pages/Footer";
-import List from "./pages/List";
+import Child from "./Child";
 
-// 引入样式文件 --> 为了让webpack打包它
-import "./App.css";
+/*
+  React函数中的this：
+    1. 生命周期函数的this指向组件实例对象
+    2. 其他函数默认是undefined，所以要改成箭头函数
 
-class App extends Component {
-  // 初始化状态
-  state = {
-    todos: [
-      { id: 1, name: "吃饭", isCompleted: false },
-      { id: 2, name: "睡觉", isCompleted: false },
-    ],
-  };
+  三个流程:
+    1. 初始化
+      constructor
+      componentWillMount
+      render
+      componentDidMount
+    2. 更新
+      更新有三种方式触发：
+        1. 父组件this.setState导致子组件重新渲染，子组件会触发：
+          componentWillReceiveProps
+          shouldComponentUpdate
+          componentWillUpdate
+          render
+          componentDidUpdate
+        2. 父组件this.setState, 父组件触发：
+          shouldComponentUpdate
+          componentWillUpdate
+          render
+          componentDidUpdate
+        3. 父组件this.forceUpdate, 父组件触发：
+          componentWillUpdate
+          render
+          componentDidUpdate  
+    3. 卸载
+      componentWillUnmount     
 
-  id = 3;
+    重要生命周期函数：
+      componentDidMount
+        发送请求、设置定时器、绑定事件等一次性任务
+      shouldComponentUpdate
+        性能优化
+          返回值 true 要更新
+          返回值 false 不更新
+      componentWillUnmount
+        取消请求、清除定时器、解绑事件等收尾工作
 
-  // 状态数据定义在哪，更新状态数据的方法就应该定义在哪？
-  addTodo = (name) => {
-    // 之前的数据
-    const { todos } = this.state;
-    this.setState({
-      // 必须要保证更新的数据是一个全新数据（不能push unshift）
-      todos: [{ id: this.id++, name, isCompleted: false }, ...todos],
-    });
-  };
+    不安全，在未来新版本即将废弃（可能会调用多次）
+      componentWillMount
+      componentWillReceiveProps
+      componentWillUpdate
+        不建议使用以上三个   
+    
+    新生命周期函数扩展了两个：
+      static getDerivedStateFromProps
+      getSnapshotBeforeUpdate    
+*/
+export default class App extends Component {
+  constructor() {
+    super(); // 调用父类的构造函数
+    console.log("App  constructor()");
+  }
 
-  updateTodo = (id, isCompleted) => {
-    const { todos } = this.state;
+  componentDidMount() {
+    console.log("App  componentDidMount()");
+  }
 
-    this.setState({
-      todos: todos.map((todo) => {
-        // map既能更新数组中所有值，也能只更新指定值
-        if (todo.id === id) {
-          return {
-            id: todo.id,
-            name: todo.name,
-            isCompleted,
-          };
-        }
-        return todo;
-      }),
-    });
-  };
+  componentWillMount() {
+    console.log("App  componentWillMount()");
+  }
 
-  checkAll = (isCheckAll) => {
-    const { todos } = this.state;
-    console.log(isCheckAll);
+  componentWillReceiveProps() {
+    console.log("App  componentWillReceiveProps()");
+  }
 
-    this.setState({
-      todos: todos.map((todo) => {
-        // map既能更新数组中所有值，也能只更新指定值
-        return {
-          id: todo.id,
-          name: todo.name,
-          isCompleted: isCheckAll,
-        };
-      }),
-    });
-  };
+  shouldComponentUpdate() {
+    console.log("App  shouldComponentUpdate()");
+    // 专门做性能优化
+    return true; // 代表要重新渲染
+    // return false; // 代表不要重新渲染
+  }
 
-  delTodo = (id) => {
-    this.setState({
-      // 不能修改原数据，要返回一个全新的数据（React中的特点）
-      // 所有修改原数据的方法都不可以用，splice、push、unshift
-      todos: this.state.todos.filter((todo) => {
-        // 返回true保留 返回false过滤
-        return todo.id !== id;
-      }),
-    });
-  };
+  componentWillUpdate() {
+    console.log("App  componentWillUpdate()");
+  }
 
-  delCompletedTodos = () => {
-    this.setState({
-      todos: this.state.todos.filter((todo) => {
-        return !todo.isCompleted;
-      }),
-    });
-  };
+  componentDidUpdate() {
+    console.log("App  componentDidUpdate()");
+  }
+
+  componentWillUnmount() {
+    console.log("App   componentWillUnmount()");
+  }
 
   render() {
-    // 读取state
-    const { todos } = this.state;
-
-    // 计算：总数
-    const allCount = todos.length;
-    // 已完成数量
-    const completedCount = todos.reduce((p, c) => {
-      return p + (c.isCompleted ? 1 : 0);
-    }, 0);
-
+    console.log("App  render()");
     return (
-      <div className="todo-container">
-        <div className="todo-wrap">
-          <Header addTodo={this.addTodo} />
-          <List
-            todos={todos}
-            updateTodo={this.updateTodo}
-            delTodo={this.delTodo}
-          />
-          <Footer
-            allCount={allCount}
-            completedCount={completedCount}
-            checkAll={this.checkAll}
-            delCompletedTodos={this.delCompletedTodos}
-          />
-        </div>
+      <div
+        onClick={() => {
+          this.setState({});
+          // this.forceUpdate(() => {}); // 强制更新（用得少）
+
+          // 将root节点上挂载的组件卸载掉
+          // ReactDOM.unmountComponentAtNode(document.getElementById("root"));
+        }}
+      >
+        <h1>React生命周期函数</h1>
+        <Child />
       </div>
     );
   }
 }
-
-export default App;
