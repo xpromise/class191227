@@ -7,6 +7,15 @@ import "./index.css";
 /*
   ReactDOM.createPortal(要渲染的元素, 渲染到哪个容器)
     将某个组件（某些元素）渲染到根节点以外~
+    1. constructor 创建DOM元素 
+      this.div = document.createElement('div') 
+      挂载在this上，方便在组件任意地方访问
+    2. render ReactDOM.createPortal(要渲染的元素, this.div)
+      将要渲染的元素渲染到div内
+    3. componentDidMount document.body.appendChild(this.div)
+      将div插入到body中生效，此时就能看到modal了~
+    4. 防止组件卸载/重新创建过程中创建多个div
+      componentWillUnmount --> this.div.remove()  将自己和自己的子元素全部干掉 
 
   通常情况下不会使用，一般用于Modal组件  
 */

@@ -4,7 +4,10 @@ import React, { Component } from "react";
 // import Father from "./pages/02.context/Father";
 // import Index from "./pages/03.性能优化";
 // import ForwardRef from "./pages/04.forwardRef";
-import Modal from "./pages/05.modal";
+// import Modal from "./pages/05.modal";
+
+import Login from "./pages/06.HOC/Login";
+import Register from "./pages/06.HOC/Register";
 
 /*
   1. 引入context：
@@ -65,14 +68,17 @@ export default class App extends Component {
           <p>hello~~~</p>
         </ForwardRef> */}
 
-        <button onClick={this.showModal}>点击显示Modal</button>
+        {/* <button onClick={this.showModal}>点击显示Modal</button>
 
         <Modal
           title={<span>app title</span>}
           content={<div>app content...</div>}
           visible={this.state.visible}
           onCancel={this.hiddenModal}
-        />
+        /> */}
+
+        <Login />
+        <Register />
       </>
     );
   }
