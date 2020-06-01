@@ -16,10 +16,12 @@ import Modal from "./pages/05.modal";
 
 export default class App extends Component {
   state = {
-    person: {
-      name: "xfz",
-      age: 40,
-    },
+    // person: {
+    //   name: "xfz",
+    //   age: 40,
+    // },
+
+    visible: false,
   };
 
   // xxRef = React.createRef();
@@ -27,6 +29,19 @@ export default class App extends Component {
   // componentDidMount() {
   //   console.log(this.xxRef);
   // }
+
+  showModal = () => {
+    // 让Modal显示 --> visible: true
+    this.setState({
+      visible: true,
+    });
+  };
+
+  hiddenModal = () => {
+    this.setState({
+      visible: false,
+    });
+  };
 
   render() {
     return (
@@ -50,9 +65,14 @@ export default class App extends Component {
           <p>hello~~~</p>
         </ForwardRef> */}
 
-        <button>点击显示Modal</button>
+        <button onClick={this.showModal}>点击显示Modal</button>
 
-        <Modal title="app title~~~" content={<div>app content...</div>} />
+        <Modal
+          title={<span>app title</span>}
+          content={<div>app content...</div>}
+          visible={this.state.visible}
+          onCancel={this.hiddenModal}
+        />
       </>
     );
   }
