@@ -1,21 +1,15 @@
 import React, { Component } from "react";
 
-/*
-  1. 将class --> className
-  2. 将没有结束符标签加上结束符：input img
-  3. 将style改成{{}}
-*/
-
-import List from "./pages/List";
-import Search from "./pages/Search";
+import FragmentDemo from "./pages/01.Fragment";
 
 export default class App extends Component {
   render() {
     return (
-      <div className="container">
-        <Search />
-        <List />
-      </div>
+      // Fragment最终不会生成多余的结构/元素
+      // 空标签就相当于Fragment
+      <>
+        <FragmentDemo />
+      </>
     );
   }
 }
