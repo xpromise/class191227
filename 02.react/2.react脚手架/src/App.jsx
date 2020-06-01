@@ -2,7 +2,9 @@ import React, { Component } from "react";
 
 // import FragmentDemo from "./pages/01.Fragment";
 // import Father from "./pages/02.context/Father";
-import Index from "./pages/03.性能优化";
+// import Index from "./pages/03.性能优化";
+// import ForwardRef from "./pages/04.forwardRef";
+import Modal from "./pages/05.modal";
 
 /*
   1. 引入context：
@@ -20,6 +22,12 @@ export default class App extends Component {
     },
   };
 
+  // xxRef = React.createRef();
+
+  // componentDidMount() {
+  //   console.log(this.xxRef);
+  // }
+
   render() {
     return (
       // Fragment最终不会生成多余的结构/元素
@@ -36,7 +44,15 @@ export default class App extends Component {
           <Father />
         </personContext.Provider> */}
 
-        <Index person={this.state.person}/>
+        {/* <Index person={this.state.person}/> */}
+
+        {/* <ForwardRef {...this.state.person} ref={this.xxRef}>
+          <p>hello~~~</p>
+        </ForwardRef> */}
+
+        <button>点击显示Modal</button>
+
+        <Modal title="app title~~~" content={<div>app content...</div>} />
       </>
     );
   }
