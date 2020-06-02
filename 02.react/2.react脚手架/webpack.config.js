@@ -38,7 +38,10 @@ module.exports = {
               "@babel/preset-env", // 编译普通JS语法
               "@babel/preset-react", // 编译jsx语法
             ],
-            plugins: ["@babel/plugin-proposal-class-properties"], // 插件
+            plugins: [ // 插件
+              ["@babel/plugin-proposal-decorators", { legacy: true }], // 解决装饰器语法
+              ["@babel/plugin-proposal-class-properties", { loose: true }], // 解决state={xxx}
+            ], 
           },
         },
       },
