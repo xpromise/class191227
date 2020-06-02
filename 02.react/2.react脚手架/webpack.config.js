@@ -21,6 +21,7 @@ module.exports = {
   output: {
     path: undefined, // 输出的目录
     filename: "[name].js", // 输出文件名
+    publicPath: '/' // 将所有webpack输出的资源，引入路由都以 / 开头
   },
   // 加载器
   module: {
@@ -38,10 +39,11 @@ module.exports = {
               "@babel/preset-env", // 编译普通JS语法
               "@babel/preset-react", // 编译jsx语法
             ],
-            plugins: [ // 插件
+            plugins: [
+              // 插件
               ["@babel/plugin-proposal-decorators", { legacy: true }], // 解决装饰器语法
               ["@babel/plugin-proposal-class-properties", { loose: true }], // 解决state={xxx}
-            ], 
+            ],
           },
         },
       },
@@ -116,6 +118,7 @@ module.exports = {
         changeOrigin: true,
       },
     },
+    historyApiFallback: true, // 解决开发的404问题
   },
   devtool: "cheap-module-source-map", // 开发环境
   resolve: {

@@ -13,12 +13,32 @@ import {
 import About from "./pages/About";
 import Home from "./pages/Home";
 
+/*
+  Hash 模式 
+    兼容性好
+    缺点带#
+    刷新页面时只会把#前面地址发请求
+  History 模式
+    兼容性稍差
+    地址很干净
+    刷新页面时会把所有地址带上发请求
+      （导致开发时刷新浏览器404问题）
+      解决：出现404，就直接返回 index.html
+            webpack配置devServer historyApiFallback: true
+      项目上线解决用 nginx
+
+      问题：引入资源（css/js）路径问题
+      解决：引入地址以 / 开头
+        webpack配置output publicPath: "/"
+        index.html --> "/bootstrap.css"
+*/
+
 export default class App extends Component {
   render() {
     return (
       // 最外面必须使用Router，里面子组件才能使用router技术
       // 给里面子组件传递需要用的属性 history
-      <HashRouter>
+      <BrowserRouter>
         <div className="row">
           <div className="col-xs-offset-2 col-xs-8">
             <div className="page-header">
@@ -70,7 +90,7 @@ export default class App extends Component {
             </div>
           </div>
         </div>
-      </HashRouter>
+      </BrowserRouter>
     );
   }
 }
