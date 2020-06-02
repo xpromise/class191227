@@ -6,8 +6,13 @@ import React, { Component } from "react";
 // import ForwardRef from "./pages/04.forwardRef";
 // import Modal from "./pages/05.modal";
 
-import Login from "./pages/06.HOC/Login";
-import Register from "./pages/06.HOC/Register";
+// import Login from "./pages/06.HOC/Login";
+// import Register from "./pages/06.HOC/Register";
+
+// import A from "./pages/07.render props/A";
+// import B from "./pages/07.render props/B";
+
+import Hooks from "./pages/08.hooks";
 
 /*
   1. 引入context：
@@ -77,8 +82,16 @@ export default class App extends Component {
           onCancel={this.hiddenModal}
         /> */}
 
-        <Login />
-        <Register />
+        {/* <Login />
+        <Register /> */}
+
+        {/* <A
+          render={(count) => {
+            return <B count={count} />;
+          }}
+        /> */}
+
+        <Hooks />
       </>
     );
   }
