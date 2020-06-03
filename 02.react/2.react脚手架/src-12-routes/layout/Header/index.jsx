@@ -46,9 +46,7 @@ export default class Header extends Component {
             String.prototype.startsWith()
             正则表达式
       */
-
     }
-
     return [];
   };
 

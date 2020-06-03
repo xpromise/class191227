@@ -1,12 +1,16 @@
 import React, { Component } from "react";
-import { BrowserRouter } from "react-router-dom";
-import Layout from "./layout";
+
+import { BrowserRouter, Route } from "./router";
+
+import Home from "./pages/Home";
+import About from "./pages/About";
 
 export default class App extends Component {
   render() {
     return (
       <BrowserRouter>
-        <Layout />
+        <Route path="/home" component={Home} />
+        <Route path="/about" component={About} />
       </BrowserRouter>
     );
   }
