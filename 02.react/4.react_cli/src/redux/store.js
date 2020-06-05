@@ -5,7 +5,9 @@
     store.dispatch(action)
     store.subscribe(listener)
 
-  创建store对象  
+  创建store对象:
+    store管理的状态数据是哪些？
+      看reducers函数的返回值 --> 就是store管理的状态数据
 */
 
 import { createStore } from 'redux';

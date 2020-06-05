@@ -1,10 +1,23 @@
 import React, { Component } from "react";
 
+import store from "./redux/store";
+import { increment, decrement } from "./redux/actions";
+
 export default class App extends Component {
   state = {
-    count: 0,
     number: 1,
   };
+
+  /* componentDidMount() {
+    this.unsubscribe = store.subscribe(() => {
+      // 一旦store管理的状态数据发生变化，就会调用
+      this.setState({});
+    });
+  }
+
+  componentWillUnmount() {
+    this.unsubscribe();
+  } */
 
   handleChange = (e) => {
     this.setState({
@@ -14,52 +27,38 @@ export default class App extends Component {
   };
 
   increment = () => {
-    const { count, number } = this.state;
-    this.setState({
-      count: count + number,
-    });
+    const { number } = this.state;
+    // 调用actions生成action对象
+    const action = increment(number);
+    // 调用dispatch方法触发reducers函数，从而更新store状态数据
+    store.dispatch(action);
   };
 
   decrement = () => {
-    const { count, number } = this.state;
-    this.setState({
-      count: count - number,
-    });
+    const { number } = this.state;
+    store.dispatch(decrement(number));
   };
 
   incrementIfOdd = () => {
-    const { count, number } = this.state;
+    const count = store.getState();
     // 如果是奇数就加
-    // if (count % 2 === 1) {}
-    /*
-      与 位运算
-      A && B 
-        A和B只要有一个是false，返回值false
-        只有都是true，返回值是true
-      A & B
-        将其转换为2进制，取最后一位进行 && 运行
-        A & 1 
-          A 如果是奇数 末尾数就是 1，1 && 1 --> 1 true
-          B 如果是偶数 末尾数就是 0，0 && 1 --> 0 false
-    */
     if (count & 1) {
-      this.setState({
-        count: count + number,
-      });
+      const { number } = this.state;
+      store.dispatch(increment(number));
     }
   };
 
   incrementAsync = () => {
     setTimeout(() => {
-      const { count, number } = this.state;
-      this.setState({
-        count: count + number,
-      });
+      const { number } = this.state;
+      store.dispatch(increment(number));
     }, 1000);
   };
 
   render() {
-    const { count } = this.state;
+    // 读取状态，展示
+    const count = store.getState();
+
     return (
       <>
         <p>click {count} times</p>

@@ -9,8 +9,15 @@ import { INCREMENT, DECREMENT } from "./constants";
   action 
     type 更新类型
     data 参与更新的数据
+  
+  一上来reducer函数会调用一次，目的为了得到初始化值
+    prevState是undefined
+    action是{type: "@@redux/INITh.s.0.p.6.s"}  
 */
-function count(prevState, action) {
+const initCount = 0; // 初始化值
+
+function count(prevState = initCount, action) {
+  console.log(prevState, action);
   // 内部计算得到newState
   switch (action.type) {
     case INCREMENT:
