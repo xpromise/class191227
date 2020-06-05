@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { increment, decrement, incrementAsync } from "./redux/actions";
+import { increment, decrement } from "./redux/actions";
 
 // 使用装饰器语法~
 @connect(
@@ -11,7 +11,7 @@ import { increment, decrement, incrementAsync } from "./redux/actions";
   }),
   // 对象：值为actions，内部会封装成函数
   // 对象：给UI传递更新redux状态数据方法
-  { increment, decrement, incrementAsync }
+  { increment, decrement }
 )
 // UI组件（被包装组件）
 class App extends Component {
@@ -46,8 +46,10 @@ class App extends Component {
   };
 
   incrementAsync = () => {
-    const { number } = this.state;
-    this.props.incrementAsync(number);
+    setTimeout(() => {
+      const { number } = this.state;
+      this.props.increment(number);
+    }, 1000);
   };
 
   render() {
