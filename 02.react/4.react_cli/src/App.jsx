@@ -3,6 +3,16 @@ import { connect } from "react-redux";
 
 import { increment, decrement } from "./redux/actions";
 
+// 使用装饰器语法~
+@connect(
+  // 函数：给UI传递redux管理的状态数据
+  (state) => ({
+    count: state,
+  }),
+  // 对象：值为actions，内部会封装成函数
+  // 对象：给UI传递更新redux状态数据方法
+  { increment, decrement }
+)
 // UI组件（被包装组件）
 class App extends Component {
   state = {
@@ -71,24 +81,24 @@ class App extends Component {
     mapStateToProps, 
     // 遍历更新redux数据的方法以props方式传给UI组件
     mapDispatchToProps
-  )()
+  )(UI)
 
   connect高阶组件，返回值是一个新组件 --> 容器组件
     作用：负责给被包装的UI组件传递redux的数据和更新数据的方法
 */
 
 // 接受redux管理的状态数据作为参数
-const mapStateToProps = (state) => {
+/* const mapStateToProps = (state) => {
   // 返回值是对象
   // 将来这个对象就会以props方式传递给UI组件
   // 所以UI组件能接受到一个属性count，值就是状态数据
   return {
     count: state,
   };
-};
+}; */
 
 // 接受store.dispatch方法作为参数
-const mapDispatchToProps = (dispatch) => {
+/* const mapDispatchToProps = (dispatch) => {
   // 返回值是对象
   // 将来这个对象就会以props方式传递给UI组件
   return {
@@ -104,9 +114,21 @@ const mapDispatchToProps = (dispatch) => {
       dispatch(decrement(number));
     },
   };
-};
+}; */
 
 // 容器组件(包装组件)
-const Container = connect(mapStateToProps, mapDispatchToProps)(App);
+// const Container = connect(mapStateToProps, mapDispatchToProps)(App);
 
-export default Container;
+// export default Container;
+
+/* export default connect(
+  // 函数：给UI传递redux管理的状态数据
+  (state) => ({
+    count: state,
+  }),
+  // 对象：值为actions，内部会封装成函数
+  // 对象：给UI传递更新redux状态数据方法
+  { increment, decrement }
+)(App); */
+
+export default App;
