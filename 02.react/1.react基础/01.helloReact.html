@@ -17,6 +17,8 @@
     <script type="text/babel">
       // 1. 创建虚拟DOM对象
       const vDom = <h1>hello react</h1>; // JSX浏览器时不识别的，所以需要引入babel来编译
+      console.log(vDom);
+
       // const vDom1 = '<h1>hello react</h1>'; // 过去JS中，标签字符串
       // 2. 将虚拟DOM对象渲染到页面指定容器中
       ReactDOM.render(vDom, document.getElementById("root"));
