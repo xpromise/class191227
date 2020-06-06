@@ -1,47 +1,34 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import "./index.css";
-
-@connect(
-  (state) => ({
-    isFirstView: state.userList.isFirstView,
-    isLoading: state.userList.isLoading,
-    users: state.userList.users,
-    error: state.userList.error,
-  }),
-  null
-)
+@connect((state) => ({ comments: state.comments }), {})
 class List extends Component {
   render() {
-    const { isFirstView, isLoading, users, error } = this.props;
-
-    if (isFirstView) {
-      return <h1>Enter Name To Search</h1>;
-    }
-
-    if (isLoading) {
-      return <h1>Loading...</h1>;
-    }
-
-    if (users) {
-      return (
-        <div className="row">
-          {users.map((user) => {
+    // 获取容器组件传递的redux数据
+    const { comments } = this.props;
+    
+    return (
+      <div className="col-md-8">
+        <h3 className="reply">评论回复：</h3>
+        <h2 style={{ display: "none" }}>暂无评论，点击左侧添加评论！！！</h2>
+        <ul className="list-group">
+          {comments.map((comment) => {
             return (
-              <div className="card" key={user.id}>
-                <a href={user.html_url} target="_blank">
-                  <img src={user.avatar_url} style={{ width: 100 }} />
-                </a>
-                <p className="card-text">{user.login}</p>
-              </div>
+              <li className="list-group-item" key={comment.id}>
+                <div className="handle">
+                  <a href="javascript:;">删除</a>
+                </div>
+                <p className="user">
+                  <span>{comment.name}</span>
+                  <span>说:</span>
+                </p>
+                <p className="centence">{comment.content}</p>
+              </li>
             );
           })}
-        </div>
-      );
-    }
-
-    return <h1>{error}</h1>;
+        </ul>
+      </div>
+    );
   }
 }
 

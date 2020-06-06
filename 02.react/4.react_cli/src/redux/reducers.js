@@ -1,59 +1,27 @@
 /*
   根据prevState和action来生成newState函数模块
 */
-
 import { combineReducers } from "redux";
-import {
-  GET_USERS_DATA_FAILED,
-  GET_USERS_DATA_SUCCESS,
-  LOADING,
-} from "./constants";
+import { ADD_COMMENT, DEL_COMMENT } from "./contants";
 
-const initUserList = {
-  isFirstView: true,
-  isLoading: false,
-  users: null,
-  error: "",
-};
+// 初始化值
+const initComments = [
+  { id: 1, name: "jack", content: "you jump i jump" },
+  { id: 2, name: "rose", content: "i donnot jump" },
+];
 
-function userList(prevState = initUserList, action) {
+// reducer函数名称：看管理什么数据
+function comments(prevState = initComments, action) {
   switch (action.type) {
-    case LOADING:
-      /* return {
-        isFirstView: false,
-        isLoading: true,
-        users: prevState.users,
-        error: prevState.error,
-      }; */
-      return {
-        ...prevState, // babel能让对象使用...运算符
-        isFirstView: false,
-        isLoading: true,
-      };
-    case GET_USERS_DATA_SUCCESS:
-      /* return {
-        isFirstView: prevState.isFirstView,
-        isLoading: false,
-        users: action.data,
-        error: prevState.error,
-      }; */
-      return {
-        ...prevState,
-        isLoading: false,
-        users: action.data,
-      };
-    case GET_USERS_DATA_FAILED:
-      return {
-        ...prevState,
-        isLoading: false,
-        users: null,
-        error: action.data,
-      };
+    case ADD_COMMENT:
+      return [action.data, ...prevState];
+    case DEL_COMMENT:
+      return prevState.filter((comment) => comment.id !== action.data);
     default:
       return prevState;
   }
 }
 
 export default combineReducers({
-  userList,
+  comments,
 });
