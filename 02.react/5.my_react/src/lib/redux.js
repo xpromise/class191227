@@ -7,6 +7,7 @@
         store.dispatch(action) 触发更新（触发reducer调用）
         store.subscribe(listener) 监听redux状态的变化，一旦发生变化就触发listener
     combineReducers()  
+      整合多个reducer函数成为一个函数
 */
 
 /**
@@ -64,6 +65,59 @@ export function createStore(reducers) {
   };
 }
 
+/**
+ * 整合多个reducer函数成为一个函数
+ * @param {object} reducers 是一个对象，对象中有n个reducer函数
+ * @return 整合后的reducer函数
+ */
+export function combineReducers(reducers) {
+  //#region
+  /*
+    reducers 
+      接受的值
+      {
+        xxx: function xxx(prevState, action) {},
+        yyy: function yyy(prevState, action) {}
+      }
+
+      combineReducers返回值是一个函数 --> 函数内部就应该将多个reducer的状态统一管理
+      最终redux管理的状态数据的结构：
+        {
+          xxx: xxx, --> xxx(prevState['xxx'], action)
+          yyy: yyy --> yyy(prevState['yyy'], action)
+        }
+  */
+  //#endregion
+
+  // 返回值：整合后的reducers函数，应该返回对象数据
+  // 对象中有多少数据，看传入的reducers函数有多少个
+  return function (prevState = {}, action) {
+    // 遍历所有传入的reducers函数
+    // 所有传入reducers函数属性名数组
+    const reducerKeys = Object.keys(reducers);
+
+    /* // 返回值：整合后的redux状态
+    const currentState = {};
+    
+    reducerKeys.forEach((reducerKey) => {
+      // 得到真正的reducer函数
+      const reducer = reducers[reducerKey];
+      // 给返回值添加key，值是对应reducer函数调用的返回值（就能得到相应状态值）
+      // 整体数据是对象（包含所有数据），而reducer调用时只需要它相关的数据即可 prevState[reducerKey]
+      currentState[reducerKey] = reducer(prevState[reducerKey], action);
+    }) */
+
+    const currentState = reducerKeys.reduce((currentState, reducerKey) => {
+      const reducer = reducers[reducerKey];
+      currentState[reducerKey] = reducer(prevState[reducerKey], action);
+      return currentState;
+    }, {});
+
+    return currentState;
+  };
+}
+
 export default {
   createStore,
+  combineReducers,
 };

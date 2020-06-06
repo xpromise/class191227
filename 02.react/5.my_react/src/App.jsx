@@ -29,7 +29,7 @@ export default class App extends Component {
   };
 
   incrementIfOdd = () => {
-    const count = store.getState();
+    const { count } = store.getState();
     // 如果是奇数就加
     if (count & 1) {
       const { number } = this.state;
@@ -46,7 +46,7 @@ export default class App extends Component {
 
   render() {
     // 读取状态，展示
-    const count = store.getState();
+    const { count } = store.getState();
 
     return (
       <>

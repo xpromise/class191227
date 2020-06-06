@@ -3,6 +3,7 @@
 
   reducers就是一个函数，函数名称一般和要管理状态数据名称一致
 */
+import { combineReducers } from "../lib/redux";
 import { INCREMENT, DECREMENT } from "./constants";
 /*
   prevState 代表之前的state
@@ -29,4 +30,9 @@ function count(prevState = initCount, action) {
   }
 }
 
-export default count;
+// export default count; // redux管理的状态数据 就是 count --> count(prevState, action)
+
+// redux管理的状态数据 就是 { count } --> { count: count(prevState, action), yyy: yyy(prevState, action) }
+export default combineReducers({
+  count,
+});
