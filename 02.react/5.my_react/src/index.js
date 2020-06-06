@@ -1,14 +1,17 @@
 import React from "./lib/react";
-// import ReactDOM from "react-dom";
+import ReactDOM from "./lib/react-dom";
 
 // 创建虚拟DOM对象
 const vDom = (
-  <h1 id="title" className="title">
-    hello react
-  </h1>
+  <ul id="list" className="list">
+    <li>111</li>
+    <li className="child">
+      <span>222</span>
+    </li>
+    <li onClick={() => console.log(333)}>333</li>
+    <li onClick={() => console.log(444)}>444</li>
+  </ul>
 );
-
-console.log(vDom);
 
 // 创建ES6类组件
 class ClassComp extends React.Component {
@@ -16,12 +19,13 @@ class ClassComp extends React.Component {
     return (
       <h1 id="title" className="title">
         hello react
+        <FuncComp />
       </h1>
     );
   }
 }
 
-console.log(<ClassComp />);
+// console.log(<ClassComp />);
 
 // 创建工厂函数组件
 function FuncComp() {
@@ -32,6 +36,6 @@ function FuncComp() {
   );
 }
 
-console.log(<FuncComp />);
+// console.log(<FuncComp />);
 
-// ReactDOM.render(vDom, document.getElementById("root"));
+ReactDOM.render(<ClassComp />, document.getElementById("root"));
