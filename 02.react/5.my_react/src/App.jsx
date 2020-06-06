@@ -1,9 +1,9 @@
 import React, { Component } from "react";
+import { connect } from "./lib/react-redux";
 
-import store from "./redux/store";
 import { increment, decrement } from "./redux/actions";
 
-export default class App extends Component {
+class App extends Component {
   state = {
     number: 1,
   };
@@ -17,36 +17,33 @@ export default class App extends Component {
 
   increment = () => {
     const { number } = this.state;
-    // 调用actions生成action对象
-    const action = increment(number);
-    // 调用dispatch方法触发reducers函数，从而更新store状态数据
-    store.dispatch(action);
+    this.props.increment(number);
   };
 
   decrement = () => {
     const { number } = this.state;
-    store.dispatch(decrement(number));
+    this.props.decrement(number);
   };
 
   incrementIfOdd = () => {
-    const { count } = store.getState();
+    const { count } = this.props;
     // 如果是奇数就加
     if (count & 1) {
       const { number } = this.state;
-      store.dispatch(increment(number));
+      this.props.increment(number);
     }
   };
 
   incrementAsync = () => {
     setTimeout(() => {
       const { number } = this.state;
-      store.dispatch(increment(number));
+      this.props.increment(number);
     }, 1000);
   };
 
   render() {
     // 读取状态，展示
-    const { count } = store.getState();
+    const { count } = this.props;
 
     return (
       <>
@@ -64,3 +61,13 @@ export default class App extends Component {
     );
   }
 }
+
+export default connect(
+  // 状态数据
+  (state) => ({ count: state.count }),
+  // 更新状态数据的方法
+  {
+    increment,
+    decrement,
+  }
+)(App);
