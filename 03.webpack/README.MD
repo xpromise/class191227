@@ -94,8 +94,10 @@
   ```
 
 - 问题：
+
   - HMR 功能默认情况下，只对 css 生效（style-loader 帮我们做了），JS 是没有效果的
   - JS 需要加上以下代码：
+
   ```js
   // 判断是否开启了HMR
   if (module.hot) {
@@ -105,26 +107,31 @@
     });
   }
   ```
-  - HTML是不能有HMR功能
+
+  - HTML 是不能有 HMR 功能
 
 - 项目中的配置
-  - Vue项目：vue-loader 
-  - React项目：react-hot-loader
+  - Vue 项目：vue-loader
+  - React 项目：react-hot-loader
 
 ## 兼容性处理
-1. JS兼容性处理 babel
+
+1. JS 兼容性处理 babel
+
 - 使用 babel-loader presets: [ "@babel/preset-env" ] 只能预设
-  - 问题：只能转化基本/简单语法，如Promise没法转化
-- 使用 babel-loader presets: [ "@babel/preset-env" ] + '@babel/polyfill' 
-  - 能够处理所有JS兼容性问题
+  - 问题：只能转化基本/简单语法，如 Promise 没法转化
+- 使用 babel-loader presets: [ "@babel/preset-env" ] + '@babel/polyfill'
+  - 能够处理所有 JS 兼容性问题
   - 新问题：打包文件体积太大了（我们只要做部分语法的兼容性处理，但是却把所有语法的兼容性处理都引入了）
-- 使用 babel-loader presets: [ "@babel/preset-env" ] + core-js 
-  - 能够处理所有JS兼容性问题
+- 使用 babel-loader presets: [ "@babel/preset-env" ] + core-js
+  - 能够处理所有 JS 兼容性问题
   - 优点：按需加载（自动根据我们使用的语法，自动加载相应的兼容性包~）
 
-2. CSS兼容性处理  
-- 使用 postcss-loader 做css兼容性处理
+2. CSS 兼容性处理
+
+- 使用 postcss-loader 做 css 兼容性处理
 - 配置
+
 ```js
 {
   loader: require.resolve('postcss-loader'),
@@ -148,7 +155,9 @@
   },
 }
 ```
-- package.json配置: 兼容性列表
+
+- package.json 配置: 兼容性列表
+
 ```json
 "browserslist": {
   "production": [
@@ -163,9 +172,80 @@
   ]
 }
 ```
+
 - 定义环境
+
 ```js
-process.env.NODE_ENV = "production";
+process.env.NODE_ENV = "production"; // 用来指定browserslist使用的版本
+mode: "production"; // 为了代码中使用 process.env.NODE_ENV
 ```
 
+## tree shaking
 
+- 树摇：去除无用的 JS 代码
+- 配置
+  - 必须使用 ES6 模块化
+  - 开启 mode: production
+
+## code split
+
+- 代码分割：将输出一个大 JS 文件，分割成一个个小的 JS 文件，并行加载速度快
+- 配置 1
+
+```js
+// entry有两个入口，会输出两个bundle文件
+entry: {
+  // 多入口，多输出
+  main: "./src/index.js",
+  count: "./src/js/count.js",
+},
+// 提取main和count入口中公共使用的模块，成单独文件，将来好复用
+optimization: {
+  splitChunks: {
+    chunks: "all",
+  },
+},
+```
+
+- 配置 2
+
+```js
+entry: "./src/index.js",
+// 提取node_modules中模块，成单独文件
+optimization: {
+  splitChunks: {
+    chunks: "all",
+  },
+},
+
+// 动态加载JS，代码分割
+import("./js/add").then((module) => {
+  console.log(module.add(1, 2));
+});
+```
+
+- 项目中使用：一般是对路由组件进行代码分割
+  - React：Suspense 和 lazy
+  - Vue：路由表中 () => import('')
+
+## 缓存
+
+- 客户端缓存服务器请求的资源（js/css/图片...）
+
+  - 强制缓存（不会重新访问服务器，直接读取缓存）
+    - 问题：如果资源在缓存期间内，是没办法更新的~
+  - 协商缓存（每次都会重新访问服务器，由服务器来决定要不要走缓存，304）
+
+- hash webpack 打包生成的，所以资源共享 hash 值
+  - 问题：如果改动一个资源，所有资源的 hash 都变~导致其他资源缓存失效
+- chunkhash 属于同一个 chunk，hash 值一样，不同 chunk，hash 值不一样
+  - 问题：单入口样式文件因为 css-loader，会把样式文件打包到 js 中，此时就会和 js 共享同一个 hash 值，一旦改动 js 文件，css 文件缓存失效
+- contenthash 根据文件内容来生成 hash，不同文件 hash 值不同
+  - 新问题：如果 A 文件采用 import 进行代码分割文件 B，分割文件 B 一旦变化，那么 A 文件缓存失效
+  - 原因是：A 文件保存 B 文件的 hash 值，一旦 B 文件变化，A 文件的 hash 值也要更新，从而导致 A 文件也变了
+  - 解决：需要将 A 文件保存 B 文件的 hash 值单独提取出来，成单独文件，这样就不会影响 A 文件了
+  ```js
+  runtimeChunk: {
+    name: (entry) => `runtime-${entry.name}.js`;
+  }
+  ```
