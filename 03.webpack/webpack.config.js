@@ -16,6 +16,7 @@
     4. 定义webpack配置文件
       项目根目录/webpack.config.js  
 */
+const webpack = require("webpack");
 const path = require("path");
 // npm i html-webpack-plugin -D
 const HtmlWebpackPlugin = require("html-webpack-plugin");
@@ -32,13 +33,21 @@ module.exports = {
     publicPath: "/", // 决定资源引入的公共路径
   },
   module: {
-    rules: [],
+    rules: [
+      // npm i css-loader style-loader -D
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
+      },
+    ],
   },
   plugins: [
     // 处理html文件
     new HtmlWebpackPlugin({
       template: resolve("public/index.html"), // 以index.html文件为模板创建新html文件
     }),
+    // HMR功能插件
+    new webpack.HotModuleReplacementPlugin(),
   ],
   mode: "development",
   devServer: {
@@ -46,6 +55,7 @@ module.exports = {
     port: 9527,
     open: true,
     compress: true,
+    hot: true, // 开启HMR
   },
   devtool: "cheap-module-source-map",
   resolve: {

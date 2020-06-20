@@ -72,3 +72,37 @@
       jquery: "jQuery"; // 当webpack解析jQuery就会跳过，不解析
     }
     ```
+
+## HMR 功能
+
+- hot module replacement 热模块替换功能
+  - 之前：一旦修改一个模块，整个页面会刷新，重新加载，速度慢
+  - 现在开启 HMR 功能：一旦修改一个模块，只有这个模块会重新加载，整个页面不会刷新，速度快
+- 作用：提升项目热更新速度
+- 配置：
+
+  ```js
+  devServer: {
+    ...,
+    hot: true
+  }
+
+  plugins: [
+    ...,
+    new webpack.HotModuleReplacementPlugin(),
+  ]
+  ```
+
+- 问题：
+  - HMR 功能默认情况下，只对 css 生效（style-loader 帮我们做了），JS 是没有效果的
+  - JS 需要加上以下代码：
+  ```js
+  // 判断是否开启了HMR
+  if (module.hot) {
+    // 让某个JS模块具备HMR功能 --> 只要下面文件发生变化，别的文件使用缓存，重新加载下面文件
+    module.hot.accept("模块路径", () => {
+      // 当模块更新后，触发的函数
+    });
+  }
+  ```
+  - HTML是不能有HMR功能
