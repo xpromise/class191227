@@ -37,5 +37,4 @@ function FuncComp() {
 }
 
 // console.log(<FuncComp />);
-
 ReactDOM.render(<ClassComp />, document.getElementById("root"));
