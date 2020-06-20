@@ -106,3 +106,66 @@
   }
   ```
   - HTML是不能有HMR功能
+
+- 项目中的配置
+  - Vue项目：vue-loader 
+  - React项目：react-hot-loader
+
+## 兼容性处理
+1. JS兼容性处理 babel
+- 使用 babel-loader presets: [ "@babel/preset-env" ] 只能预设
+  - 问题：只能转化基本/简单语法，如Promise没法转化
+- 使用 babel-loader presets: [ "@babel/preset-env" ] + '@babel/polyfill' 
+  - 能够处理所有JS兼容性问题
+  - 新问题：打包文件体积太大了（我们只要做部分语法的兼容性处理，但是却把所有语法的兼容性处理都引入了）
+- 使用 babel-loader presets: [ "@babel/preset-env" ] + core-js 
+  - 能够处理所有JS兼容性问题
+  - 优点：按需加载（自动根据我们使用的语法，自动加载相应的兼容性包~）
+
+2. CSS兼容性处理  
+- 使用 postcss-loader 做css兼容性处理
+- 配置
+```js
+{
+  loader: require.resolve('postcss-loader'),
+  options: {
+    // Necessary for external CSS imports to work
+    // https://github.com/facebook/create-react-app/issues/2677
+    ident: 'postcss',
+    plugins: () => [
+      require('postcss-flexbugs-fixes'), // 修改flex bugs
+      require('postcss-preset-env')({ // 做兼容性处理
+        autoprefixer: {
+          flexbox: 'no-2009',
+        },
+        stage: 3,
+      }),
+      // Adds PostCSS Normalize as the reset css with default options,
+      // so that it honors browserslist config in package.json
+      // which in turn let's users customize the target behavior as per their needs.
+      require('postcss-normalize')(), // 引入reset.css
+    ],
+  },
+}
+```
+- package.json配置: 兼容性列表
+```json
+"browserslist": {
+  "production": [
+    ">0.2%",
+    "not dead",
+    "not op_mini all"
+  ],
+  "development": [
+    "last 1 chrome version",
+    "last 1 firefox version",
+    "last 1 safari version"
+  ]
+}
+```
+- 定义环境
+```js
+process.env.NODE_ENV = "production";
+```
+
+

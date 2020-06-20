@@ -1,0 +1,9 @@
+#box1 {
+  width: 200px;
+  height: 200px;
+  background-color: pink;
+}
+#box1 p {
+  font-size: 20px;
+}
+
